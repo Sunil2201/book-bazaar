@@ -7,7 +7,7 @@ function App() {
       <header className="App-header">
         <img src={logo} alt="mockBee logo" width="180" height="180" />
         <h1 className="brand-title">
-          Welcome to <span>book-bazaar!</span>
+          Welcome to <span>book-bazaaaaaaaaaaaaar!</span>
         </h1>
         <p className="brand-description">
           Get started by editing <code>src/App.js</code>
