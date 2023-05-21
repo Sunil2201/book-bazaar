@@ -1,3 +1,8 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -99,4 +104,34 @@ code {
 }
 .singleCategory, .singleRating, .sortByPrices{
   display: flex;
+}
+.pageContainer{
+  text-align: left;
+  padding: 1rem 3rem 1rem 3rem;
+}
+.nameInput, .passwordInput,.emailInput{
+  box-shadow: rgba(0, 0, 0, 0.11);
+  border: none;
+  background: #ccc;
+  border-radius: 3rem;
+  height: 3rem;
+  width: 100%;
+  outline: none;
+  font-family: 'Montserrat', sans-serif;
+  padding: 0 3rem;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+.passwordInputDiv {
+  position: relative;
+}
+.showPassword {
+  cursor: pointer;
+  position: absolute;
+  top: 12%;
+  right: 2%;
+}
+.otherMethodOfAuth{
+  text-align: center;
+  margin: 5%;
 }
