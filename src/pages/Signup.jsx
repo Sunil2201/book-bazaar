@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { MdVisibility } from "react-icons/md";
 import "../index.css";
+import { AuthContext } from "../contexts/AuthContext";
 
 function Signup() {
+  const { setIsAuthenticated } = useContext(AuthContext);
+
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -18,19 +21,22 @@ function Signup() {
     }));
   };
 
-  const handleSignup = async() => {
+  const handleSignup = async () => {
     const response = await fetch("/api/auth/signup", {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData)
-      });
-  
-      console.log(await response.json());
-  }
+      method: "POST",
+      mode: "cors",
+      cache: "no-cache",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    const modifiedResponse = await response.json();
+    localStorage.setItem("token", modifiedResponse?.encodedToken);
+    if(modifiedResponse?.encodedToken){
+        setIsAuthenticated(true)
+    }
+  };
 
   return (
     <div className="pageContainer">

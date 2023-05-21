@@ -1,8 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { MdVisibility } from "react-icons/md";
 import "../index.css";
+import { AuthContext } from "../contexts/AuthContext";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function SignIn() {
+  const { setIsAuthenticated } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  console.log(location);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -25,11 +31,15 @@ function SignIn() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(formData)
+      body: JSON.stringify(formData),
     });
-
-    console.log(await response.json());
-  };
+    const modifiedResponse = await response.json();
+    localStorage.setItem("token", modifiedResponse?.encodedToken);
+    if(modifiedResponse?.encodedToken){
+        setIsAuthenticated(true)
+        navigate(location?.state?.from?.pathname)
+    }
+};
 
   return (
     <div className="pageContainer">

@@ -2,6 +2,7 @@ import React from "react";
 import { AiOutlineHeart, AiOutlineShoppingCart } from "react-icons/ai";
 import { BiSearch } from "react-icons/bi";
 import "../index.css";
+import { NavLink } from "react-router-dom";
 
 function Header() {
   return (
@@ -13,8 +14,8 @@ function Header() {
       </div>
       <div className="headerActions">
         <button>Login</button>
-        <AiOutlineHeart size={25}/>
-        <AiOutlineShoppingCart size={25}/>
+        <NavLink to="/wishlist"><AiOutlineHeart size={25}/></NavLink>
+        <NavLink to="/cart"><AiOutlineShoppingCart size={25}/></NavLink>
       </div>
     </div>
   );
