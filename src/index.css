@@ -11,3 +11,92 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.headerContainer{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 4rem 1rem 4rem;
+}
+.headerContainer h2{
+  margin: 0;
+}
+.headerContainer .searchContainer{
+  position: relative;
+}
+.headerContainer .searchContainer .searchIcon{
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+}
+.headerContainer .searchContainer input{
+  margin: 0;
+  padding: 0.5rem 2rem 0.5rem 2rem;
+  width: 100%;
+}
+.headerContainer .headerActions{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.headerContainer .headerActions button{
+  cursor: pointer;
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+}
+.bookCategories{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+.productPage{
+  display: grid;
+  grid-template-columns: 16rem 1fr;
+}
+.filterContainer{
+  border-right: 1px solid black;
+  padding: 1rem;
+}
+.filterContainer .filterHeader{
+  display: flex;
+  justify-content: space-between;
+}
+.productPage .productContainer{
+  padding: 1.5rem 1.5rem 1.5rem 2.5rem;
+}
+.productPage .productContainer h3{
+  text-align: left;
+}
+.allProducts{
+  display: flex;
+  gap: 5%;
+  flex-wrap: wrap;
+}
+.individualProduct{
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border: 1px solid black;
+  margin-top: 1rem;
+}
+.individualProduct img{
+  height: 50%;
+  width: 100%;
+}
+.priceFilter{
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+.availablePrices{
+  display: flex;
+  justify-content: space-between;
+}
+.categoriesFilter, .ratingsFilter, .pricingSortFilter{
+  display: flex;
+  flex-direction: column;
+}
+.singleCategory, .singleRating, .sortByPrices{
+  display: flex;
+}
