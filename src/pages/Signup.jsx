@@ -4,8 +4,6 @@ import "../index.css";
 import { AuthContext } from "../contexts/AuthContext";
 
 function Signup() {
-  const { setIsAuthenticated } = useContext(AuthContext);
-
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -14,28 +12,13 @@ function Signup() {
   });
   const { name, email, password } = formData;
 
+  const {handleUserSignup} = useContext(AuthContext)
+
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
       [e.target.id]: e.target.value,
     }));
-  };
-
-  const handleSignup = async () => {
-    const response = await fetch("/api/auth/signup", {
-      method: "POST",
-      mode: "cors",
-      cache: "no-cache",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-    const modifiedResponse = await response.json();
-    localStorage.setItem("token", modifiedResponse?.encodedToken);
-    if(modifiedResponse?.encodedToken){
-        setIsAuthenticated(true)
-    }
   };
 
   return (
@@ -78,7 +61,7 @@ function Signup() {
             />
           </div>
         </form>
-        <button onClick={handleSignup}>Sign up</button>
+        <button onClick={() => handleUserSignup(name, email, password)}>Sign up</button>
         <div className="otherMethodOfAuth">
           <h3>Already have an account?</h3>
           <p>Sign In</p>

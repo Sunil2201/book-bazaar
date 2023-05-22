@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import "../index.css";
 import { ProductsContext } from "../contexts/ProductsContext";
 import Filters from "../components/Filters";
-import { AuthContext } from "../contexts/AuthContext";
 
 function Products() {
   const {
@@ -14,8 +13,6 @@ function Products() {
     addToCartHandler,
     addToWishlistHandler
   } = useContext(ProductsContext);
-
-  const {isAuthenticated} = useContext(AuthContext)
 
   const normalizedRating = parseInt(ratingFilter.split(" ")[0], 10);
 

@@ -2,13 +2,10 @@ import React, { useContext, useState } from "react";
 import { MdVisibility } from "react-icons/md";
 import "../index.css";
 import { AuthContext } from "../contexts/AuthContext";
-import { useLocation, useNavigate } from "react-router-dom";
 
 function SignIn() {
-  const { setIsAuthenticated } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const location = useLocation();
-  console.log(location);
+  const {handleUserLogin} = useContext(AuthContext)
+  
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -22,24 +19,6 @@ function SignIn() {
       [e.target.id]: e.target.value,
     }));
   };
-
-  const handleLogin = async () => {
-    const response = await fetch("/api/auth/login", {
-      method: "POST",
-      mode: "cors",
-      cache: "no-cache",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-    const modifiedResponse = await response.json();
-    localStorage.setItem("token", modifiedResponse?.encodedToken);
-    if(modifiedResponse?.encodedToken){
-        setIsAuthenticated(true)
-        navigate(location?.state?.from?.pathname || "/products")
-    }
-};
 
   return (
     <div className="pageContainer">
@@ -72,7 +51,7 @@ function SignIn() {
             />
           </div>
         </form>
-        <button onClick={handleLogin}>Sign In</button> &nbsp;
+        <button onClick={() => handleUserLogin(email, password)}>Sign In</button> &nbsp;
         <button>Test user</button>
         <div className="otherMethodOfAuth">
           <h3>Don't have an account?</h3>

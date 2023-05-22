@@ -1,5 +1,5 @@
 import React from "react";
-import { AiOutlineHeart, AiOutlineShoppingCart } from "react-icons/ai";
+import { AiOutlineHeart, AiOutlineShoppingCart, AiOutlineUser } from "react-icons/ai";
 import { BiSearch } from "react-icons/bi";
 import "../index.css";
 import { NavLink } from "react-router-dom";
@@ -16,6 +16,7 @@ function Header() {
         <button>Login</button>
         <NavLink to="/wishlist"><AiOutlineHeart size={25}/></NavLink>
         <NavLink to="/cart"><AiOutlineShoppingCart size={25}/></NavLink>
+        <NavLink to="/profile"><AiOutlineUser size={25}></AiOutlineUser></NavLink>
       </div>
     </div>
   );

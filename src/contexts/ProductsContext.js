@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const ProductsContext = createContext();
 
@@ -16,7 +16,7 @@ export function ProductsProvider({ children }) {
   const encodedToken = localStorage.getItem("token");
 
   const navigate = useNavigate()
-  const{isAuthenticated} = useContext(AuthContext)
+  const{token} = useContext(AuthContext)
 
   const getProducts = async () => {
     try {
@@ -112,7 +112,7 @@ export function ProductsProvider({ children }) {
   }
 
   const addToCartHandler = (product) => {
-    isAuthenticated ? 
+    token ? 
     (
       addToCart(product)
     ) : (
@@ -121,7 +121,7 @@ export function ProductsProvider({ children }) {
   }
 
   const addToWishlistHandler = (product) => {
-    isAuthenticated ? 
+    token ? 
     (
       addToWishlist(product)
     ):(

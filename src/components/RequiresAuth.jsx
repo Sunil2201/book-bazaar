@@ -4,8 +4,8 @@ import { AuthContext } from "../contexts/AuthContext";
 
 function RequiresAuth({ children }) {
   let location = useLocation();
-  const { isAuthenticated } = useContext(AuthContext);
-  return isAuthenticated ? (
+  const { token } = useContext(AuthContext);
+  return token ? (
     children
   ) : (
     <Navigate to="/signin" state={{ from: location }} />

@@ -9,6 +9,7 @@ import Signup from "./pages/Signup";
 import RequiresAuth from "./components/RequiresAuth";
 import Cart from "./pages/Cart";
 import Wishlist from "./pages/Wishlist";
+import UserProfile from "./pages/UserProfile/UserProfile";
 
 function App() {
   return (
@@ -33,6 +34,14 @@ function App() {
           element={
             <RequiresAuth>
               <Wishlist />
+            </RequiresAuth>
+          }
+        />
+        <Route 
+          path="/profile"
+          element={
+            <RequiresAuth>
+              <UserProfile />
             </RequiresAuth>
           }
         />
