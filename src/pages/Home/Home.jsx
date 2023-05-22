@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import "../index.css"
+import "../../index.css"
 import { NavLink } from 'react-router-dom'
+import Slider from '../../components/Slider/Slider'
+import DealsContainer from '../../components/Deals/DealsContainer'
 
 function Home() {
 
@@ -22,9 +24,10 @@ function Home() {
 
   return (
     <div className='homePageContainer'>
-        <div>
-            An Image will come here
+        <div className='sliderParent'>
+          <Slider />
         </div>
+        <DealsContainer />
         <div className='bookCategoriesContainer'>
             <h2>Featured Book Categories</h2>
             <p>There are many categories of book available at book bazaar. Choose your favorite one now</p>

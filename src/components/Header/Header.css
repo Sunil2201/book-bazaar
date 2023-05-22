@@ -1,0 +1,87 @@
+:root {
+  --primary-color: #fff;
+  --secondary-color: #0b7c6b;
+  --search-box-color: #ecf8f7;
+}
+.headerContainer {
+  padding: 1% 4% 1% 4%;
+  background: var(--primary-color);
+  border-bottom: 1px solid #ccc;
+}
+.navContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.headerContainer a {
+  text-decoration: none;
+}
+.appTitle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.appTitle h2 {
+  color: #000;
+}
+.searchContainer {
+  position: relative;
+}
+.searchContainer .searchIcon {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+}
+.searchContainer input {
+  padding: 0.75rem 2rem 0.75rem 2rem;
+  width: 120%;
+  border-radius: 20px;
+  background: var(--search-box-color);
+  border: none;
+  color: #ccc;
+  font-size: 14px;
+}
+.navContainer .headerActions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.navContainer .headerActions button {
+  cursor: pointer;
+  padding: 0.75rem 1.5rem 0.75rem 1.5rem;
+  border: none;
+  background: var(--secondary-color);
+  color: var(--primary-color);
+  border-radius: 20px;
+}
+
+@media screen and (max-width: 550px) {
+  .headerContainer {
+    padding: 1.5% 4% 1.5% 4%;
+  }
+  .searchContainer {
+    display: none;
+  }
+  .searchForSmallerScreens {
+    display: flex;
+    margin-top: 2%;
+    width: 100%;
+  }
+  .appTitle h2 {
+    font-size: 18px;
+  }
+  .navContainer .headerActions button {
+    padding: 0.5rem 1rem 0.5rem 1rem;
+  }
+  .navContainer .headerActions {
+    gap: 0.5rem;
+  }
+}
+
+@media screen and (min-width: 500px) {
+  .searchForSmallerScreens {
+    display: none;
+  }
+}
