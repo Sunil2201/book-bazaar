@@ -37,7 +37,7 @@ function SignIn() {
     localStorage.setItem("token", modifiedResponse?.encodedToken);
     if(modifiedResponse?.encodedToken){
         setIsAuthenticated(true)
-        navigate(location?.state?.from?.pathname)
+        navigate(location?.state?.from?.pathname || "/products")
     }
 };
 

@@ -7,7 +7,7 @@ import { NavLink } from "react-router-dom";
 function Header() {
   return (
     <div className="headerContainer">
-      <h2>book bazaar</h2>
+      <h2><NavLink to="/">book bazaar</NavLink></h2>
       <div className="searchContainer">
         <BiSearch className="searchIcon"/>
         <input type="text" id="" placeholder="Search" />

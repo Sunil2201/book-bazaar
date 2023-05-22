@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
+import { ProductsContext } from "../contexts/ProductsContext";
 
 function Cart() {
-  console.log(localStorage.getItem("token"));
+
+  const {cart} = useContext(ProductsContext)
+
+  console.log(cart);
+
   return <div>Cart</div>;
 }
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import "../index.css"
+import { NavLink } from 'react-router-dom'
 
 function Home() {
 
@@ -34,6 +35,7 @@ function Home() {
                 )
               })}
             </div>
+            <p><NavLink to="/products">Go to products</NavLink></p>
         </div>
     </div>
   )

@@ -1,4 +1,6 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { AuthContext } from "./AuthContext";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 export const ProductsContext = createContext();
 
@@ -9,6 +11,12 @@ export function ProductsProvider({ children }) {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [ratingFilter, setRatingFilter] = useState("");
   const [sortingOrder, setSortingOrder] = useState("");
+  const [cart, setCart] = useState([])
+  const [wishList, setWishList] = useState([])
+  const encodedToken = localStorage.getItem("token");
+
+  const navigate = useNavigate()
+  const{isAuthenticated} = useContext(AuthContext)
 
   const getProducts = async () => {
     try {
@@ -65,6 +73,62 @@ export function ProductsProvider({ children }) {
     setSortingOrder(orderSelected)
   }
 
+  const addToCart = async(product) => {
+    try {
+      let response = await fetch("/api/user/cart", {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+          "authorization": encodedToken
+        },
+        body: JSON.stringify({product})
+      })
+      const {cart: cartItems} = await response.json()
+      setCart(cartItems)
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const addToWishlist = async(product) => {
+    try {
+      let response = await fetch("/api/user/wishlist", {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+          "authorization": encodedToken
+        },
+        body: JSON.stringify({product})
+      })
+      const {wishlist: wishlistItems} = await response.json()
+      setWishList(wishlistItems)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const addToCartHandler = (product) => {
+    isAuthenticated ? 
+    (
+      addToCart(product)
+    ) : (
+      navigate("/signin")
+    );
+  }
+
+  const addToWishlistHandler = (product) => {
+    isAuthenticated ? 
+    (
+      addToWishlist(product)
+    ):(
+      navigate("/signin")
+    )
+  }
+
   return (
     <ProductsContext.Provider
       value={{
@@ -74,10 +138,14 @@ export function ProductsProvider({ children }) {
         selectedCategories,
         ratingFilter,
         sortingOrder,
+        cart,
+        wishList,
         handleSlider,
         handleCategory,
         handleRating,
-        handleSortingOrder
+        handleSortingOrder,
+        addToCartHandler,
+        addToWishlistHandler
       }}
     >
       {children}

@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import "../index.css";
 import { ProductsContext } from "../contexts/ProductsContext";
 import Filters from "../components/Filters";
+import { AuthContext } from "../contexts/AuthContext";
 
 function Products() {
   const {
@@ -10,7 +11,11 @@ function Products() {
     selectedCategories,
     ratingFilter,
     sortingOrder,
+    addToCartHandler,
+    addToWishlistHandler
   } = useContext(ProductsContext);
+
+  const {isAuthenticated} = useContext(AuthContext)
 
   const normalizedRating = parseInt(ratingFilter.split(" ")[0], 10);
 
@@ -74,7 +79,7 @@ function Products() {
           ({ price }) => price <= parseInt(priceFilter, 10)
         )
       : products.filter(({ price }) => price <= parseInt(priceFilter, 10));
-
+    
   return (
     <div className="productPage">
       <Filters />
@@ -88,7 +93,8 @@ function Products() {
                 <h3>{product.title}</h3>
                 <p>{product.author}</p>
                 <p>{`Rs ${product.price}`}</p>
-                <button>Add to cart</button>
+                <button onClick={() => addToCartHandler(product)}>Add to cart</button>
+                <button onClick={() => addToWishlistHandler(product)}>Add to Wishlist</button>
               </div>
             );
           })}
