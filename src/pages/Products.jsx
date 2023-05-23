@@ -14,6 +14,8 @@ function Products() {
     addToWishlistHandler
   } = useContext(ProductsContext);
 
+  console.log(selectedCategories);
+
   const normalizedRating = parseInt(ratingFilter.split(" ")[0], 10);
 
   const getSortedProducts = (arrToSort) => {

@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export const ProductsContext = createContext();
 
@@ -129,6 +129,26 @@ export function ProductsProvider({ children }) {
     )
   }
 
+  const viewParticularCategoryBooks = (idOfselectedCategory) => {
+    setCategories(
+      [...categories].map((category) =>
+        category._id === idOfselectedCategory
+          ? { ...category, isSelected: !category.isSelected }
+          : { ...category }
+      )
+    );
+
+    const selectedCategory = [...categories].find(
+      ({ _id }) => _id === idOfselectedCategory
+    );
+    
+    selectedCategory.isSelected
+      ? setSelectedCategories([...selectedCategories].filter(category => category !== selectedCategory.categoryName))
+      : setSelectedCategories([...selectedCategories, selectedCategory.categoryName]);
+
+      navigate("/products")
+    }
+    
   return (
     <ProductsContext.Provider
       value={{
@@ -145,7 +165,8 @@ export function ProductsProvider({ children }) {
         handleRating,
         handleSortingOrder,
         addToCartHandler,
-        addToWishlistHandler
+        addToWishlistHandler,
+        viewParticularCategoryBooks
       }}
     >
       {children}

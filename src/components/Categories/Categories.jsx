@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Categories.css";
 import { NavLink } from "react-router-dom";
+import { ProductsContext } from "../../contexts/ProductsContext";
 
 function Categories() {
   const [categories, setCategories] = useState([]);
+  const {viewParticularCategoryBooks} = useContext(ProductsContext)
 
   const categoryImages = [
     `${process.env.PUBLIC_URL}/fantasy.jpg`,
@@ -52,8 +54,8 @@ function Categories() {
     <div className="bookCategoriesContainer">
       <h2>Featured Book Categories</h2>
       <div className="image-container">
-        {mergedCategories.map(({ image, categoryName }, index) => (
-          <div className="singleCategory">
+        {mergedCategories.map(({ image, categoryName, _id }, index) => (
+          <div className="singleCategory" onClick={() => viewParticularCategoryBooks(_id)}>
             <img
               key={index}
               src={image}

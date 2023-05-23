@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../index.css";
 import { ProductsContext } from "../contexts/ProductsContext";
 
@@ -57,7 +57,7 @@ function Filters() {
                 type="checkbox"
                 id={`category-${idx}`}
                 value={category.categoryName}
-                selected={category.isSelected}
+                checked={category.isSelected}
                 onClick={() => handleCategory(category._id)}
               />
               <label htmlFor={`category-${idx}`}>{category.categoryName}</label>
@@ -77,7 +77,7 @@ function Filters() {
                 id={`rating-${idx}`}
                 value={rating}
                 checked={ratingFilter === rating}
-                onClick={(e) => handleRating(e.target.value)}
+                onChange={(e) => handleRating(e.target.value)}
               />
               <label htmlFor={`rating-${idx}`}>{rating}</label>
             </div>
@@ -94,7 +94,7 @@ function Filters() {
             id="ascendingOrder"
             value="ascending"
             checked={sortingOrder === "ascending"}
-            onClick={(e) => handleSortingOrder(e.target.value)}
+            onChange={(e) => handleSortingOrder(e.target.value)}
           />
           <label htmlFor="ascendingOrder">Price - Low to High</label>
         </div>
@@ -104,7 +104,7 @@ function Filters() {
             id="descendingOrder"
             value="descending"
             checked={sortingOrder === "descending"}
-            onClick={(e) => handleSortingOrder(e.target.value)}
+            onChange={(e) => handleSortingOrder(e.target.value)}
           />
           <label htmlFor="descendingOrder">Price - High to Low</label>
         </div>
