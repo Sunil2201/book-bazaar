@@ -1,0 +1,41 @@
+:root {
+  --primary-color: #fff;
+  --secondary-color: #0b7c6b;
+  --search-box-color: #ecf8f7;
+}
+.bookCategoriesContainer {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  padding: 2% 7.5%;
+}
+.bookCategories {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.image-container {
+  margin-top: 2%;
+  display: flex;
+  flex-wrap: wrap;
+}
+.rounded-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.singleCategory {
+  width: 23%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 10px;
+  cursor: pointer;
+}
+.singleCategory p {
+  margin-top: 10px;
+  font-weight: bold;
+  text-transform: capitalize;
+  color: var(--secondary-color);
+}

@@ -1,0 +1,24 @@
+:root {
+  --background-color: #101313;
+}
+footer {
+  background: var(--background-color);
+  color: white;
+}
+.generalInfo {
+  display: flex;
+  justify-content: space-between;
+  padding: 2.5% 8%;
+}
+.aboutApp,
+.personalInfo, .copyrightSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+}
+.copyrightSection{
+    border-top: 0.2px solid #F9FCFB;
+    padding: 1% 0%;
+    text-align: center;
+}
