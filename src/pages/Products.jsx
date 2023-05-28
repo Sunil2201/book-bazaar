@@ -1,7 +1,10 @@
 import React, { useContext } from "react";
 import "../index.css";
 import { ProductsContext } from "../contexts/ProductsContext";
-import Filters from "../components/Filters";
+import Filters from "../components/Filters/Filters";
+import Rating from "../components/Rating/Rating";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
 function Products() {
   const {
@@ -10,11 +13,14 @@ function Products() {
     selectedCategories,
     ratingFilter,
     sortingOrder,
+    isHovered,
     addToCartHandler,
-    addToWishlistHandler
+    addToWishlistHandler,
+    handleMouseEnter,
+    handleMouseLeave,
   } = useContext(ProductsContext);
 
-  console.log(selectedCategories);
+  const navigate = useNavigate()
 
   const normalizedRating = parseInt(ratingFilter.split(" ")[0], 10);
 
@@ -78,22 +84,58 @@ function Products() {
           ({ price }) => price <= parseInt(priceFilter, 10)
         )
       : products.filter(({ price }) => price <= parseInt(priceFilter, 10));
-    
+
+  const goToCart = () => {
+    navigate("/cart")
+  }
+
   return (
     <div className="productPage">
       <Filters />
       <div className="productContainer">
         <h3>Showing All Books</h3>
         <div className="allProducts">
-          {modifiedProducts.map((product) => {
+          {modifiedProducts.map((product, idx) => {
             return (
               <div className="individualProduct">
-                <img src={product.img} alt="book-img" />
-                <h3>{product.title}</h3>
-                <p>{product.author}</p>
-                <p>{`Rs ${product.price}`}</p>
-                <button onClick={() => addToCartHandler(product)}>Add to cart</button>
-                <button onClick={() => addToWishlistHandler(product)}>Add to Wishlist</button>
+                <div className="productImageContainer">
+                  <img src={product.img} alt="book-img" />
+                  <div
+                    className="addToWishlistIcon"
+                    onClick={() => addToWishlistHandler(product, product._id)}
+                    onMouseEnter={
+                      isHovered[idx] ? () => handleMouseEnter(product._id) : null
+                    }
+                    onMouseLeave={
+                      isHovered[idx] ? () => handleMouseLeave(product._id) : null
+                    }
+                  >
+                    {product.isWishlisted ? (
+                      <AiFillHeart fill="red" size={20} />
+                    ) : (
+                      <AiOutlineHeart size={20} />
+                    )}
+                  </div>
+                </div>
+
+                <div className="productDetails">
+                  <p className="authorName">{product.author}</p>
+                  <h3 className="bookTitle">{product.title}</h3>
+                  <Rating rating={product.rating} />
+                  <p className="productPrice">{`Rs ${product.price}`}</p>
+                  {product.isPresentInCart ? (
+                    <button className="addToCartBtn" onClick={goToCart}>
+                      Go to cart
+                    </button>
+                  ) : (
+                    <button
+                      className="addToCartBtn"
+                      onClick={() => addToCartHandler(product, product._id)}
+                    >
+                      Add to cart
+                    </button>
+                  )}
+                </div>
               </div>
             );
           })}

@@ -1,0 +1,41 @@
+.filterContainer {
+  height: 100%;
+  border-right: 1px solid black;
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  text-align: left;
+}
+.clearAllFilters {
+  cursor: pointer;
+}
+.filterContainer .filterHeader {
+  display: flex;
+  justify-content: space-between;
+}
+.singleCategoryFilter,
+.singleRating,
+.sortByPrices {
+  display: flex;
+  gap: 1rem;
+}
+.availablePrices {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+.categoriesContainer,
+.ratingsContainer,
+.priceSortContainer {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.categoriesFilter,
+.ratingsFilter,
+.pricingSortFilter {
+  display: flex;
+  flex-direction: column;
+}

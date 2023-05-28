@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   AiOutlineHeart,
   AiOutlineShoppingCart,
@@ -13,6 +13,12 @@ function Header() {
   return (
     <div className="headerContainer">
       <div className="navContainer">
+        <div class="burger">
+          <div class="line1"></div>
+          <div class="line2"></div>
+          <div class="line3"></div>
+        </div>
+
         <NavLink to="/">
           <div className="appTitle">
             <ImBooks size={25} color="#0B7C6B" />

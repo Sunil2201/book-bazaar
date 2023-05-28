@@ -1,0 +1,25 @@
+.rating {
+  text-align: left;
+  display: inline-block;
+}
+
+.rating .star {
+  color: #ccc;
+  font-size: 20px;
+}
+
+.rating .star.filled {
+  color: #ffd700;
+}
+
+.rating .star.half {
+  position: relative;
+}
+
+.rating .star.half:before {
+  content: "\2605";
+  position: absolute;
+  width: 50%;
+  overflow: hidden;
+  color: #ffd700;
+}

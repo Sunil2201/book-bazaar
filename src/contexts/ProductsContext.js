@@ -11,18 +11,18 @@ export function ProductsProvider({ children }) {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [ratingFilter, setRatingFilter] = useState("");
   const [sortingOrder, setSortingOrder] = useState("");
-  const [cart, setCart] = useState([])
-  const [wishList, setWishList] = useState([])
-  const encodedToken = localStorage.getItem("token");
+  const [cart, setCart] = useState([]);
+  const [wishList, setWishList] = useState([]);
+  const [isHovered, setIsHovered] = useState(new Array(32).fill(true));
 
-  const navigate = useNavigate()
-  const{token} = useContext(AuthContext)
+  const navigate = useNavigate();
+  const { token } = useContext(AuthContext);
 
   const getProducts = async () => {
     try {
       const response = await fetch("/api/products");
       const modifiedResponse = await response.json();
-      setProducts(modifiedResponse.products);
+      setProducts((modifiedResponse.products).map(product => ({...product, isPresentInCart: false})));
     } catch (error) {
       console.error(error);
     }
@@ -61,19 +61,26 @@ export function ProductsProvider({ children }) {
     );
 
     selectedCategory.isSelected
-      ? setSelectedCategories([...selectedCategories].filter(category => category !== selectedCategory.categoryName))
-      : setSelectedCategories([...selectedCategories, selectedCategory.categoryName]);
+      ? setSelectedCategories(
+          [...selectedCategories].filter(
+            (category) => category !== selectedCategory.categoryName
+          )
+        )
+      : setSelectedCategories([
+          ...selectedCategories,
+          selectedCategory.categoryName,
+        ]);
   };
 
   const handleRating = (selectedRating) => {
-    setRatingFilter(selectedRating)
-  }
+    setRatingFilter(selectedRating);
+  };
 
   const handleSortingOrder = (orderSelected) => {
-    setSortingOrder(orderSelected)
-  }
+    setSortingOrder(orderSelected);
+  };
 
-  const addToCart = async(product) => {
+  const addToCart = async (product) => {
     try {
       let response = await fetch("/api/user/cart", {
         method: "POST",
@@ -81,18 +88,18 @@ export function ProductsProvider({ children }) {
         cache: "no-cache",
         headers: {
           "Content-Type": "application/json",
-          "authorization": encodedToken
+          authorization: token,
         },
-        body: JSON.stringify({product})
-      })
-      const {cart: cartItems} = await response.json()
-      setCart(cartItems)
+        body: JSON.stringify({ product }),
+      });
+      const { cart: cartItems } = await response.json();
+      setCart(cartItems);
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
-  const addToWishlist = async(product) => {
+  const addToWishlist = async (product) => {
     try {
       let response = await fetch("/api/user/wishlist", {
         method: "POST",
@@ -100,34 +107,81 @@ export function ProductsProvider({ children }) {
         cache: "no-cache",
         headers: {
           "Content-Type": "application/json",
-          "authorization": encodedToken
+          authorization: token,
         },
-        body: JSON.stringify({product})
-      })
-      const {wishlist: wishlistItems} = await response.json()
-      setWishList(wishlistItems)
+        body: JSON.stringify({ product }),
+      });
+      const { wishlist: wishlistItems } = await response.json();
+      setWishList(wishlistItems);
     } catch (error) {
-      console.error(error)
+      console.error(error);
+    }
+  };
+
+  const removeProductFromWishlist = async(productId) => {
+    try {
+      let response = await fetch(`/api/user/wishlist/${productId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: token,
+        }
+      })
+      const {wishlist} = await response.json();
+      setWishList(wishlist);
+    } catch (error) {
+      console.log(error.message);
     }
   }
 
-  const addToCartHandler = (product) => {
-    token ? 
-    (
+  const addToCartHandler = (product, productId) => {
+    if(token){
       addToCart(product)
-    ) : (
-      navigate("/signin")
-    );
-  }
+      setProducts(
+        [...products].map((product) =>
+          product._id === productId
+            ? { ...product, isPresentInCart: true }
+            : { ...product }
+        )
+      );
+    }else{
+      navigate("/signin");
+    }
+  };
 
-  const addToWishlistHandler = (product) => {
-    token ? 
-    (
-      addToWishlist(product)
-    ):(
-      navigate("/signin")
-    )
-  }
+  const addToWishlistHandler = (product, productId) => {
+    if (token) {
+      const findTheProductInWishlist = [...wishList].find(
+        ({ _id }) => _id === productId
+      );
+      const indexOfWishlistedElement = [...products].findIndex(({ _id }) => _id === productId)
+      const copyOfIsHoveredState = [...isHovered]
+      copyOfIsHoveredState[indexOfWishlistedElement] = false
+      setIsHovered(copyOfIsHoveredState);
+
+      if (findTheProductInWishlist === undefined) {
+        addToWishlist(product);
+        setProducts(
+          [...products].map((product) =>
+            product._id === productId
+              ? { ...product, isWishlisted: true }
+              : { ...product }
+          )
+        );
+      }else{
+        removeProductFromWishlist(productId)
+        setProducts(
+          [...products].map((product) =>
+            product._id === productId
+              ? { ...product, isWishlisted: false }
+              : { ...product }
+          )
+        );
+      }
+    } else {
+      navigate("/signin");
+    }
+  };
 
   const viewParticularCategoryBooks = (idOfselectedCategory) => {
     setCategories(
@@ -141,14 +195,51 @@ export function ProductsProvider({ children }) {
     const selectedCategory = [...categories].find(
       ({ _id }) => _id === idOfselectedCategory
     );
-    
-    selectedCategory.isSelected
-      ? setSelectedCategories([...selectedCategories].filter(category => category !== selectedCategory.categoryName))
-      : setSelectedCategories([...selectedCategories, selectedCategory.categoryName]);
 
-      navigate("/products")
-    }
-    
+    selectedCategory.isSelected
+      ? setSelectedCategories(
+          [...selectedCategories].filter(
+            (category) => category !== selectedCategory.categoryName
+          )
+        )
+      : setSelectedCategories([
+          ...selectedCategories,
+          selectedCategory.categoryName,
+        ]);
+
+    navigate("/products");
+  };
+
+  const clearAllFilters = () => {
+    setPriceFilter(500);
+    setCategories(
+      [...categories].map((category) => ({ ...category, isSelected: false }))
+    );
+    setSelectedCategories([]);
+    setRatingFilter("");
+    setSortingOrder("");
+  };
+
+  const handleMouseEnter = (productId) => {
+    setProducts(
+      [...products].map((product) =>
+        product._id === productId
+          ? { ...product, isWishlisted: !product.isWishlisted }
+          : { ...product }
+      )
+    );
+  };
+
+  const handleMouseLeave = (productId) => {
+    setProducts(
+      [...products].map((product) =>
+        product._id === productId
+          ? { ...product, isWishlisted: !product.isWishlisted }
+          : { ...product }
+      )
+    );
+  };
+
   return (
     <ProductsContext.Provider
       value={{
@@ -160,13 +251,17 @@ export function ProductsProvider({ children }) {
         sortingOrder,
         cart,
         wishList,
+        isHovered,
         handleSlider,
         handleCategory,
         handleRating,
         handleSortingOrder,
         addToCartHandler,
         addToWishlistHandler,
-        viewParticularCategoryBooks
+        viewParticularCategoryBooks,
+        clearAllFilters,
+        handleMouseEnter,
+        handleMouseLeave,
       }}
     >
       {children}
