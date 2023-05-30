@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const ProductsContext = createContext();
 
@@ -14,6 +14,8 @@ export function ProductsProvider({ children }) {
   const [cart, setCart] = useState([]);
   const [wishList, setWishList] = useState([]);
   const [isHovered, setIsHovered] = useState(new Array(32).fill(true));
+  const [pageUrl, setPageUrl] = useState("")
+  const [showFiltersForSmallerDevices, setShowFiltersForSmallerDevices] = useState(false)
 
   const navigate = useNavigate();
   const { token } = useContext(AuthContext);
@@ -240,6 +242,10 @@ export function ProductsProvider({ children }) {
     );
   };
 
+  const toggleFilterContainer = () => {
+    setShowFiltersForSmallerDevices((prevState) => !prevState)
+  }
+
   return (
     <ProductsContext.Provider
       value={{
@@ -252,6 +258,9 @@ export function ProductsProvider({ children }) {
         cart,
         wishList,
         isHovered,
+        pageUrl,
+        showFiltersForSmallerDevices,
+        setPageUrl,
         handleSlider,
         handleCategory,
         handleRating,
@@ -262,6 +271,7 @@ export function ProductsProvider({ children }) {
         clearAllFilters,
         handleMouseEnter,
         handleMouseLeave,
+        toggleFilterContainer
       }}
     >
       {children}

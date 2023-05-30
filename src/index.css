@@ -30,20 +30,20 @@ code {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding: 3rem;
+  padding: 3% 4% 3% 4%;
 }
 .productPage .productContainer h3 {
   text-align: left;
 }
 .allProducts {
   display: flex;
-  gap: 5%;
+  column-gap: 5%;
   flex-wrap: wrap;
 }
 .individualProduct {
   display: flex;
   flex-direction: column;
-  margin-top: 1rem;
+  margin-top: 1.5%;
 }
 .productImageContainer {
   position: relative;
@@ -161,6 +161,7 @@ code {
   flex-wrap: wrap;
   width: 200px;
   font-size: 1.2rem;
+  flex-grow: 1;
 }
 .productPrice {
   margin: 0.5rem 0rem;
@@ -191,6 +192,46 @@ code {
   justify-content: center;
 }
 .productDetails {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   text-align: left;
-  flex-grow: 1;
+}
+@media screen and (max-width: 768px) {
+  .productPage {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .allProducts{
+    column-gap: 7%;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .allProducts{
+    display: flex;
+    flex-direction: column;
+    row-gap: 0;
+    column-gap: 0
+  }
+  .individualProduct{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 2%;
+  }
+  .individualProduct img{
+    height: 210px;
+    width: 160px; 
+  }
+  .productPage .productContainer{
+    padding: 1rem;
+  }
+  .productDetails{
+    padding-bottom: 1.5%;
+  }
+  .addToCartBtn{
+    width: 96%;
+  }
 }

@@ -9,6 +9,7 @@ function Filters() {
     priceFilter,
     ratingFilter,
     sortingOrder,
+    showFiltersForSmallerDevices,
     handleCategory,
     handleRating,
     handleSortingOrder,
@@ -23,7 +24,7 @@ function Filters() {
   ];
 
   return (
-    <div className="filterContainer">
+    <div className={showFiltersForSmallerDevices ? "filterContainer hide" : "filterContainer show"}>
       <div className="filterHeader">
         <p>
           <strong>Filters</strong>

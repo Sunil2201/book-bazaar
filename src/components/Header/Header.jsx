@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   AiOutlineHeart,
   AiOutlineShoppingCart,
@@ -8,16 +8,21 @@ import { BiSearch } from "react-icons/bi";
 import { ImBooks } from "react-icons/im";
 import "./Header.css";
 import { NavLink } from "react-router-dom";
+import { ProductsContext } from "../../contexts/ProductsContext";
 
 function Header() {
+  const { pageUrl, toggleFilterContainer } = useContext(ProductsContext);
+
   return (
     <div className="headerContainer">
       <div className="navContainer">
-        <div class="burger">
-          <div class="line1"></div>
-          <div class="line2"></div>
-          <div class="line3"></div>
-        </div>
+        {pageUrl === "http://localhost:3001/products" && (
+          <div class="burger" onClick={toggleFilterContainer}>
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+          </div>
+        )}
 
         <NavLink to="/">
           <div className="appTitle">

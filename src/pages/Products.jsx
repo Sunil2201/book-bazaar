@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import "../index.css";
 import { ProductsContext } from "../contexts/ProductsContext";
 import Filters from "../components/Filters/Filters";
@@ -18,11 +18,16 @@ function Products() {
     addToWishlistHandler,
     handleMouseEnter,
     handleMouseLeave,
+    setPageUrl
   } = useContext(ProductsContext);
 
   const navigate = useNavigate()
 
   const normalizedRating = parseInt(ratingFilter.split(" ")[0], 10);
+
+  useEffect(() => {
+    setPageUrl(window.location.href)
+  }, [])
 
   const getSortedProducts = (arrToSort) => {
     const sortedProducts =
@@ -103,12 +108,12 @@ function Products() {
                   <div
                     className="addToWishlistIcon"
                     onClick={() => addToWishlistHandler(product, product._id)}
-                    onMouseEnter={
-                      isHovered[idx] ? () => handleMouseEnter(product._id) : null
-                    }
-                    onMouseLeave={
-                      isHovered[idx] ? () => handleMouseLeave(product._id) : null
-                    }
+                    // onMouseEnter={
+                    //   isHovered[idx] ? () => handleMouseEnter(product._id) : null
+                    // }
+                    // onMouseLeave={
+                    //   isHovered[idx] ? () => handleMouseLeave(product._id) : null
+                    // }
                   >
                     {product.isWishlisted ? (
                       <AiFillHeart fill="red" size={20} />
