@@ -14,8 +14,9 @@ export function ProductsProvider({ children }) {
   const [cart, setCart] = useState([]);
   const [wishList, setWishList] = useState([]);
   const [isHovered, setIsHovered] = useState(new Array(32).fill(true));
-  const [pageUrl, setPageUrl] = useState("")
-  const [showFiltersForSmallerDevices, setShowFiltersForSmallerDevices] = useState(false)
+  const [pageUrl, setPageUrl] = useState("");
+  const [showFiltersForSmallerDevices, setShowFiltersForSmallerDevices] =
+    useState(false);
 
   const navigate = useNavigate();
   const { token } = useContext(AuthContext);
@@ -24,7 +25,12 @@ export function ProductsProvider({ children }) {
     try {
       const response = await fetch("/api/products");
       const modifiedResponse = await response.json();
-      setProducts((modifiedResponse.products).map(product => ({...product, isPresentInCart: false})));
+      setProducts(
+        modifiedResponse.products.map((product) => ({
+          ...product,
+          isPresentInCart: false,
+        }))
+      );
     } catch (error) {
       console.error(error);
     }
@@ -94,7 +100,8 @@ export function ProductsProvider({ children }) {
         },
         body: JSON.stringify({ product }),
       });
-      const { cart: cartItems } = await response.json();
+      let { cart: cartItems } = await response.json();
+      cartItems = cartItems.map((item) => ({ ...item, isPresentInCart: true }));
       setCart(cartItems);
     } catch (error) {
       console.error(error);
@@ -113,32 +120,39 @@ export function ProductsProvider({ children }) {
         },
         body: JSON.stringify({ product }),
       });
-      const { wishlist: wishlistItems } = await response.json();
+      let { wishlist: wishlistItems } = await response.json();
+      wishlistItems = wishlistItems.map((item) => ({
+        ...item,
+        isWishlisted: true,
+      }));
       setWishList(wishlistItems);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const removeProductFromWishlist = async(productId) => {
+  const removeProductFromWishlist = async (productId) => {
     try {
       let response = await fetch(`/api/user/wishlist/${productId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           authorization: token,
-        }
-      })
-      const {wishlist} = await response.json();
+        },
+      });
+      let { wishlist } = await response.json();
+      wishlist = wishlist.map(
+        (item) => item._id !== productId && { ...item, isWishlisted: true }
+      );
       setWishList(wishlist);
     } catch (error) {
       console.log(error.message);
     }
-  }
+  };
 
   const addToCartHandler = (product, productId) => {
-    if(token){
-      addToCart(product)
+    if (token) {
+      addToCart(product);
       setProducts(
         [...products].map((product) =>
           product._id === productId
@@ -146,7 +160,8 @@ export function ProductsProvider({ children }) {
             : { ...product }
         )
       );
-    }else{
+      setWishList([...wishList].map(item => item._id === productId ? ({...item, isPresentInCart: true}) : {...item}))
+    } else {
       navigate("/signin");
     }
   };
@@ -156,9 +171,11 @@ export function ProductsProvider({ children }) {
       const findTheProductInWishlist = [...wishList].find(
         ({ _id }) => _id === productId
       );
-      const indexOfWishlistedElement = [...products].findIndex(({ _id }) => _id === productId)
-      const copyOfIsHoveredState = [...isHovered]
-      copyOfIsHoveredState[indexOfWishlistedElement] = false
+      const indexOfWishlistedElement = [...products].findIndex(
+        ({ _id }) => _id === productId
+      );
+      const copyOfIsHoveredState = [...isHovered];
+      copyOfIsHoveredState[indexOfWishlistedElement] = false;
       setIsHovered(copyOfIsHoveredState);
 
       if (findTheProductInWishlist === undefined) {
@@ -170,8 +187,8 @@ export function ProductsProvider({ children }) {
               : { ...product }
           )
         );
-      }else{
-        removeProductFromWishlist(productId)
+      } else {
+        removeProductFromWishlist(productId);
         setProducts(
           [...products].map((product) =>
             product._id === productId
@@ -243,8 +260,25 @@ export function ProductsProvider({ children }) {
   };
 
   const toggleFilterContainer = () => {
-    setShowFiltersForSmallerDevices((prevState) => !prevState)
-  }
+    setShowFiltersForSmallerDevices((prevState) => !prevState);
+  };
+
+  const moveProductsFromWishlistToCart = (product, productId) => {
+    if(token){
+      addToCart(product);
+      removeProductFromWishlist(productId);
+      setProducts(
+        [...products].map((product) =>
+          product._id === productId
+            ? { ...product, isPresentInCart: true, isWishlisted: false }
+            : { ...product }
+        )
+      );
+    }
+    else{
+      navigate("/signin");
+    }
+  };
 
   return (
     <ProductsContext.Provider
@@ -271,7 +305,8 @@ export function ProductsProvider({ children }) {
         clearAllFilters,
         handleMouseEnter,
         handleMouseLeave,
-        toggleFilterContainer
+        toggleFilterContainer,
+        moveProductsFromWishlistToCart,
       }}
     >
       {children}

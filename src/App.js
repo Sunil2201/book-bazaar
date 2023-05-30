@@ -8,7 +8,7 @@ import SignIn from "./pages/SignIn";
 import Signup from "./pages/Signup";
 import RequiresAuth from "./components/RequiresAuth";
 import Cart from "./pages/Cart";
-import Wishlist from "./pages/Wishlist";
+import Wishlist from "./pages/Wishlist/Wishlist.jsx";
 import UserProfile from "./pages/UserProfile/UserProfile";
 
 function App() {

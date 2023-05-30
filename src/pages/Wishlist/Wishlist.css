@@ -1,0 +1,8 @@
+.wishlistPageContainer {
+  padding: 2% 5% 2% 5%;
+}
+.wishlistItemsContainer {
+  display: flex;
+  column-gap: 5%;
+  flex-wrap: wrap;
+}
