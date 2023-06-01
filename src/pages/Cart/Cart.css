@@ -1,0 +1,72 @@
+.cartPageContainer {
+  padding: 2% 10% 2% 10%;
+  display: flex;
+  flex-direction: column;
+}
+.cartContainer {
+  padding-top: 3%;
+  display: flex;
+  justify-content: space-between;
+}
+.cartItems {
+  display: flex;
+  flex-direction: column;
+}
+.priceDetailsCard {
+  width: 30%;
+  text-align: left;
+  height: fit-content;
+  background: #ccc;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+.priceDetailsCard h3 {
+  text-transform: uppercase;
+}
+.cardHeading,
+.priceBreakdown,
+.totalAmount {
+  padding: 3% 0%;
+  border-bottom: 1px solid black;
+}
+.priceBreakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.individualPrice,
+.totalAmount {
+  display: flex;
+  justify-content: space-between;
+}
+.amountSavedSummary {
+  padding: 3% 0%;
+}
+.priceDetailsCard button {
+  width: 100%;
+  cursor: pointer;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  background: var(--secondary-color);
+}
+@media screen and (max-width: 768px) {
+  .cartPageContainer {
+    padding: 2%;
+  }
+  .priceDetailsCard {
+    width: auto;
+    padding: 1rem;
+  }
+  .priceDetailsCard h3 {
+    font-size: 18px;
+  }
+}
+@media screen and (max-width: 550px) {
+  .cartContainer {
+    display: flex;
+    flex-direction: column;
+  }
+}

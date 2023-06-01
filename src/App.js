@@ -7,7 +7,7 @@ import MockmanTesting from "./pages/MockmanTesting";
 import SignIn from "./pages/SignIn";
 import Signup from "./pages/Signup";
 import RequiresAuth from "./components/RequiresAuth";
-import Cart from "./pages/Cart";
+import Cart from "./pages/Cart/Cart.jsx";
 import Wishlist from "./pages/Wishlist/Wishlist.jsx";
 import UserProfile from "./pages/UserProfile/UserProfile";
 

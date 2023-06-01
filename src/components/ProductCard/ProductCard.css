@@ -1,0 +1,165 @@
+.individualProduct {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1.5%;
+}
+.individualProductCart{
+  display: flex;
+  margin-top: 1.5%;
+}
+.productImageContainer {
+  position: relative;
+}
+.individualProduct img, .individualProductCart img {
+  height: 250px;
+  width: 200px;
+  border-radius: 10px;
+}
+.individualProductCart img{
+  height: 280px;
+}
+.addToWishlistIcon {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  border: 0.5px solid gray;
+  opacity: 0.8;
+  background: #fff;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.productDetails, .productDetailsCart {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+}
+.productDetailsCart{
+  padding: 2% 5% 1% 5%;
+}
+.authorName {
+  color: var(--secondary-color);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  margin: 0.5rem 0rem;
+}
+.bookTitle, .bookTitleCart {
+  display: flex;
+  flex-wrap: wrap;
+  width: 200px;
+  font-size: 1.2rem;
+  flex-grow: 1;
+}
+
+.bookTitleCart{
+  flex-grow: 0;
+  width: 300px;
+}
+
+.productPrice {
+  margin: 0.5rem 0rem;
+  color: var(--secondary-color);
+}
+
+.cartBtn, .wishlistBtn {
+  width: 100%;
+  cursor: pointer;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  background: var(--secondary-color);
+}
+.quantityIncrease{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.quantityIncreaseContainer{
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.quantityIncreaseContainer input{
+  display: inline-block;
+  text-align: center;
+  border: none;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  margin: 0px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+}
+
+.quantityIncreaseContainer button{
+  display: inline-block;
+  border: 1px solid #ddd;
+  margin: 0px;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  text-align: center;
+  vertical-align: middle;
+  padding: 11px 0;
+  background: #eee;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .bookTitleCart{
+    width: 200px;
+  }
+  .quantityIncreaseContainer input, .quantityIncreaseContainer button{
+    width: 30px;
+    height: 30px;
+    padding: 0;
+  }
+  .quantityIncrease{
+    gap: 0.5rem;
+  }
+  .productDetailsCart{
+    padding: 2%;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .individualProduct, .individualProductCart {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 2%;
+  }
+  .individualProduct img, .individualProductCart img {
+    height: 240px;
+    width: 160px;
+  }
+  .productDetails {
+    padding-bottom: 1.5%;
+  }
+  .cartBtn, .wishlistBtn {
+    margin-top: 2%;
+  }
+  .productDetailsCart{
+    padding: 1%;
+  }
+  .authorName{
+    margin: 0.2rem 0rem;
+  }
+}

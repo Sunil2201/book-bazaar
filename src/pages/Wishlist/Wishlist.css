@@ -1,5 +1,7 @@
 .wishlistPageContainer {
   padding: 2% 5% 2% 5%;
+  display: flex;
+  flex-direction: column;
 }
 .wishlistItemsContainer {
   display: flex;

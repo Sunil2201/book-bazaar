@@ -104,7 +104,44 @@ export function ProductsProvider({ children }) {
       cartItems = cartItems.map((item) => ({ ...item, isPresentInCart: true }));
       setCart(cartItems);
     } catch (error) {
-      console.error(error);
+      console.error(error.message);
+    }
+  };
+
+  const removeProductFromCart = async (productId) => {
+    try {
+      let response = await fetch(`/api/user/cart/${productId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: token,
+        },
+      });
+      const { cart: cartItems } = await response.json();
+      setCart(cartItems);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const updateProductQuantityInCart = async (productId, actionType) => {
+    try {
+      let response = await fetch(`/api/user/cart/${productId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: token,
+        },
+        body: JSON.stringify({
+          action: {
+            type: actionType === "increment" ? "increment" : "decrement",
+          },
+        }),
+      });
+      let { cart: cartItems } = await response.json();
+      setCart(cartItems);
+    } catch (error) {
+      console.log(error.message);
     }
   };
 
@@ -142,7 +179,7 @@ export function ProductsProvider({ children }) {
       });
       let { wishlist } = await response.json();
       wishlist = wishlist.map(
-        (item) => item._id !== productId && { ...item, isWishlisted: true }
+        (item) => item._id !== productId ? { ...item, isWishlisted: true } : {...item, isWishlisted: false}
       );
       setWishList(wishlist);
     } catch (error) {
@@ -152,15 +189,42 @@ export function ProductsProvider({ children }) {
 
   const addToCartHandler = (product, productId) => {
     if (token) {
-      addToCart(product);
-      setProducts(
-        [...products].map((product) =>
-          product._id === productId
-            ? { ...product, isPresentInCart: true }
-            : { ...product }
-        )
+      const findTheProductInCart = [...cart].find(
+        ({ _id }) => _id === productId
       );
-      setWishList([...wishList].map(item => item._id === productId ? ({...item, isPresentInCart: true}) : {...item}))
+      if (findTheProductInCart === undefined) {
+        addToCart(product);
+        setProducts(
+          [...products].map((product) =>
+            product._id === productId
+              ? { ...product, isPresentInCart: true }
+              : { ...product }
+          )
+        );
+        setWishList(
+          [...wishList].map((item) =>
+            item._id === productId
+              ? { ...item, isPresentInCart: true }
+              : { ...item }
+          )
+        );
+      } else {
+        removeProductFromCart(productId);
+        setProducts(
+          [...products].map((product) =>
+            product._id === productId
+              ? { ...product, isPresentInCart: false }
+              : { ...product }
+          )
+        );
+        setWishList(
+          [...wishList].map((product) =>
+            product._id === productId
+              ? { ...product, isPresentInCart: false }
+              : { ...product }
+          )
+        );
+      }
     } else {
       navigate("/signin");
     }
@@ -187,6 +251,13 @@ export function ProductsProvider({ children }) {
               : { ...product }
           )
         );
+        setCart(
+          [...cart].map((item) =>
+            item._id === productId
+              ? { ...item, isWishlisted: true }
+              : { ...item }
+          )
+        );
       } else {
         removeProductFromWishlist(productId);
         setProducts(
@@ -194,6 +265,13 @@ export function ProductsProvider({ children }) {
             product._id === productId
               ? { ...product, isWishlisted: false }
               : { ...product }
+          )
+        );
+        setCart(
+          [...cart].map((item) =>
+            item._id === productId
+              ? { ...item, isWishlisted: false }
+              : { ...item }
           )
         );
       }
@@ -264,8 +342,9 @@ export function ProductsProvider({ children }) {
   };
 
   const moveProductsFromWishlistToCart = (product, productId) => {
-    if(token){
-      addToCart(product);
+    if (token) {
+      const productToMoveFromWishlistToCart = {...product, isWishlisted: false}
+      addToCart(productToMoveFromWishlistToCart);
       removeProductFromWishlist(productId);
       setProducts(
         [...products].map((product) =>
@@ -274,8 +353,24 @@ export function ProductsProvider({ children }) {
             : { ...product }
         )
       );
+    } else {
+      navigate("/signin");
     }
-    else{
+  };
+
+  const moveProductFromCartToWishlist = (product, productId) => {
+    if (token) {
+      const productToMoveFromCartToWishlist = {...product, isPresentInCart: false}
+      addToWishlist(productToMoveFromCartToWishlist);
+      removeProductFromCart(productId);
+      setProducts(
+        [...products].map((product) =>
+          product._id === productId
+            ? { ...product, isPresentInCart: false, isWishlisted: true }
+            : { ...product }
+        )
+      );
+    } else {
       navigate("/signin");
     }
   };
@@ -307,6 +402,8 @@ export function ProductsProvider({ children }) {
         handleMouseLeave,
         toggleFilterContainer,
         moveProductsFromWishlistToCart,
+        updateProductQuantityInCart,
+        moveProductFromCartToWishlist,
       }}
     >
       {children}
