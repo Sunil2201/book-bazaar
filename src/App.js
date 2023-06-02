@@ -10,6 +10,7 @@ import RequiresAuth from "./components/RequiresAuth";
 import Cart from "./pages/Cart/Cart.jsx";
 import Wishlist from "./pages/Wishlist/Wishlist.jsx";
 import UserProfile from "./pages/UserProfile/UserProfile";
+import ProductDetail from "./pages/ProductDetail/ProductDetail";
 
 function App() {
   return (
@@ -44,6 +45,13 @@ function App() {
               <UserProfile />
             </RequiresAuth>
           }
+        />
+        <Route 
+          path="/products/:productId"
+          element={
+          <RequiresAuth>
+            <ProductDetail />
+          </RequiresAuth>}
         />
       </Routes>
     </div>

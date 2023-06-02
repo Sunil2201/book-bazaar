@@ -27,11 +27,16 @@ function ProductCard({ product, parent }) {
     navigate("/wishlist");
   };
 
+  const goToProductDetailPage = (productId) => {
+    navigate(`/products/${productId}`);
+  }
+
   return (
     <div
       className={
         parent === "Cart" ? "individualProductCart" : "individualProduct"
       }
+      onClick={parent === "Products" && (() => goToProductDetailPage(product._id))}
     >
       <div className="productImageContainer">
         <img src={product.img} alt="book-img" />

@@ -1,17 +1,43 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
+import "./UserProfile.css";
 
 function UserProfile() {
   const { user, handleUserLogout } = useContext(AuthContext);
+
+  const [section, setSection] = useState("profile");
+
+  const sections = ["Profile", "Address"];
+
+  const handleSectionChange = (e) => {
+    setSection(e.target.getAttribute("value"));
+  }
+
   return (
-    <div>
-      <h3>Account Details</h3>
-      <div>
-        <p>Full Name:{user?.name || user?.firstName + " " + user?.lastName}</p>
-        <p>Email: {user?.email}</p>
+    <main>
+      <h2>Account Details</h2>
+      <div className="mainContainer">
+        <div className="sections">
+          {sections.map((section) => {
+            return <p onClick={handleSectionChange} value={section.toLowerCase()}>{section}</p>;
+          })}
+        </div>
+        <div className="userDetails">
+          <h3>Profile Details</h3>
+          <div className="userDetailsContent">
+            <div className="nameContainer">
+              <p>Full Name</p>
+              <p>{user?.name || user?.firstName + " " + user?.lastName}</p>
+            </div>
+            <div className="emailContainer">
+              <p>Email</p>
+              <p>{user?.email}</p>
+            </div>
+          </div>
+          <button onClick={handleUserLogout}>Log Out</button>
+        </div>
       </div>
-      <button onClick={handleUserLogout}>Log Out</button>
-    </div>
+    </main>
   );
 }
 

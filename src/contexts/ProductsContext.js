@@ -17,6 +17,8 @@ export function ProductsProvider({ children }) {
   const [pageUrl, setPageUrl] = useState("");
   const [showFiltersForSmallerDevices, setShowFiltersForSmallerDevices] =
     useState(false);
+  const [productDetails, setProductDetails] = useState({})
+  
 
   const navigate = useNavigate();
   const { token } = useContext(AuthContext);
@@ -178,8 +180,10 @@ export function ProductsProvider({ children }) {
         },
       });
       let { wishlist } = await response.json();
-      wishlist = wishlist.map(
-        (item) => item._id !== productId ? { ...item, isWishlisted: true } : {...item, isWishlisted: false}
+      wishlist = wishlist.map((item) =>
+        item._id !== productId
+          ? { ...item, isWishlisted: true }
+          : { ...item, isWishlisted: false }
       );
       setWishList(wishlist);
     } catch (error) {
@@ -343,7 +347,10 @@ export function ProductsProvider({ children }) {
 
   const moveProductsFromWishlistToCart = (product, productId) => {
     if (token) {
-      const productToMoveFromWishlistToCart = {...product, isWishlisted: false}
+      const productToMoveFromWishlistToCart = {
+        ...product,
+        isWishlisted: false,
+      };
       addToCart(productToMoveFromWishlistToCart);
       removeProductFromWishlist(productId);
       setProducts(
@@ -360,7 +367,10 @@ export function ProductsProvider({ children }) {
 
   const moveProductFromCartToWishlist = (product, productId) => {
     if (token) {
-      const productToMoveFromCartToWishlist = {...product, isPresentInCart: false}
+      const productToMoveFromCartToWishlist = {
+        ...product,
+        isPresentInCart: false,
+      };
       addToWishlist(productToMoveFromCartToWishlist);
       removeProductFromCart(productId);
       setProducts(
@@ -374,6 +384,15 @@ export function ProductsProvider({ children }) {
       navigate("/signin");
     }
   };
+
+  const fetchProductDetails = async(productId) => {
+    try {
+      const res = await fetch(`/api/products/${productId}`)
+      setProductDetails(await res.json());
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
 
   return (
     <ProductsContext.Provider
@@ -389,6 +408,7 @@ export function ProductsProvider({ children }) {
         isHovered,
         pageUrl,
         showFiltersForSmallerDevices,
+        productDetails,
         setPageUrl,
         handleSlider,
         handleCategory,
@@ -404,6 +424,7 @@ export function ProductsProvider({ children }) {
         moveProductsFromWishlistToCart,
         updateProductQuantityInCart,
         moveProductFromCartToWishlist,
+        fetchProductDetails
       }}
     >
       {children}

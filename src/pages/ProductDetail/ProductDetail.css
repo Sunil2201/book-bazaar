@@ -1,0 +1,90 @@
+.productDetailsContainer {
+  display: flex;
+  gap: 10%;
+  padding: 5% 10%;
+  text-align: left;
+}
+.imageContainer,
+.individualProductDetails {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  height: fit-content;
+  border-radius: 20px;
+}
+.individualProductDetails {
+  border: none;
+}
+.productDetailsContainer img {
+  height: 500px;
+  border-radius: 20px;
+}
+.productLabels {
+  display: flex;
+  gap: 1rem;
+}
+.individualProductDetails {
+  display: flex;
+  flex-direction: column;
+  padding: 2%;
+}
+.productLabels p {
+  padding: 0.5rem;
+  background: #e4fffb;
+  border-radius: 0.5rem;
+  color: var(--secondary-color);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.topSection {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 0.5rem;
+  padding-bottom: 2%;
+  border-bottom: 1px solid #ccc;
+}
+.bookInfoDiv {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.descriptionSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 2% 0%;
+}
+.formatsSection {
+  display: flex;
+  flex-direction: column;
+  text-transform: capitalize;
+}
+.formatsSection p span {
+  color: #ccc;
+}
+.formatsContainer {
+  padding-top: 2%;
+  display: flex;
+  gap: 2%;
+}
+.selectedFormat,
+.format {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background: #e4e9e8;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.selectedFormat {
+  border: 1px solid #17bd8d;
+  color: #17bd8d;
+}
+.actionButtons {
+  padding: 2% 0%;
+  display: flex;
+  gap: 2%;
+}
+.actionButtons button {
+  width: 20%;
+}

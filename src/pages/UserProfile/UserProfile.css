@@ -1,0 +1,51 @@
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 2%;
+}
+.sections {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+.sections p {
+  padding: 2% 0%;
+  cursor: pointer;
+}
+.mainContainer {
+  width: 30%;
+  margin-top: 2%;
+  box-shadow: 5px 5px 5px rgba(50, 50, 71, 0.06);
+  border-radius: 20px;
+}
+.userDetails {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 2% 5%;
+}
+.userDetails button {
+  width: 40%;
+  cursor: pointer;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  background: red;
+}
+.userDetailsContent {
+  margin: 3% 0%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.nameContainer,
+.emailContainer {
+  display: flex;
+}
+.nameContainer {
+  gap: 10%;
+}
+.emailContainer {
+  gap: 25%;
+}
