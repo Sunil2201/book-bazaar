@@ -1,12 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ProductsContext } from "../../contexts/ProductsContext";
 import "./ProductDetail.css";
 import Rating from "../../components/Rating/Rating";
 
 function ProductDetail() {
   const { productId } = useParams();
-  const { fetchProductDetails, productDetails } = useContext(ProductsContext);
+  const navigate = useNavigate();
+  const {
+    fetchProductDetails,
+    productDetails,
+    addToWishlistHandler,
+    addToCartHandler,
+  } = useContext(ProductsContext);
 
   const [selectedFormat, setSelectedFormat] = useState("audio");
 
@@ -20,12 +26,20 @@ function ProductDetail() {
     fetchProductDetails(productId);
   }, []);
 
+  const goToWishlist = () => {
+    navigate("/wishlist");
+  };
+
+  const goToCart = () => {
+    navigate("/cart");
+  };
+
   return (
     <main className="individualProductPage">
       <h2>Product Details</h2>
       <div className="productDetailsContainer">
         <div className="imageContainer">
-          <img src={productDetails?.product?.img} alt="book-img" />
+          <img src={productDetails?.img} alt="book-img" />
         </div>
         <div className="individualProductDetails">
           <section className="topSection">
@@ -33,19 +47,19 @@ function ProductDetail() {
               <p>In Stock</p>
               <p>Discount</p>
             </div>
-            <h2>{productDetails?.product?.title}</h2>
+            <h2>{productDetails?.title}</h2>
             <div className="bookInfoDiv">
-              <p>Author: {productDetails?.product?.author}</p>
-              <Rating rating={productDetails?.product?.rating} />
+              <p>Author: {productDetails?.author}</p>
+              <Rating rating={productDetails?.rating} />
             </div>
           </section>
           <section className="descriptionSection">
-            <p>{productDetails?.product?.description?.para1}</p>
-            {productDetails?.product?.description?.para2 && (
-              <p>{productDetails?.product?.description?.para2}</p>
+            <p>{productDetails?.description?.para1}</p>
+            {productDetails?.description?.para2 && (
+              <p>{productDetails?.description?.para2}</p>
             )}
-            {productDetails?.product?.description?.para3 && (
-              <p>{productDetails?.product?.description?.para3}</p>
+            {productDetails?.description?.para3 && (
+              <p>{productDetails?.description?.para3}</p>
             )}
           </section>
           <section className="formatsSection">
@@ -67,10 +81,43 @@ function ProductDetail() {
                 );
               })}
             </div>
+            <p className="individualProductPrice">Rs {productDetails?.price}</p>
+          </section>
+          <section className="moreAboutBookSection">
+            <div className="genresSection">
+              <p className="label">Genres</p>
+              <div className="genresContainer">
+                {productDetails?.genres.map((genre) => {
+                  return <p>{genre}</p>;
+                })}
+              </div>
+            </div>
+            <p className="pagesSection">{productDetails?.noOfPages} pages </p>
           </section>
           <section className="actionButtons">
-            <button className="cartBtn">Add to Cart</button>
-            <button className="wishlistBtn">Add to Wishlist</button>
+            <button
+              className="cartBtn"
+              onClick={
+                productDetails?.isPresentInCart
+                  ? () => goToCart()
+                  : () => addToCartHandler(productDetails, productDetails?._id)
+              }
+            >
+              {productDetails?.isPresentInCart ? "Go to Cart" : "Add to Cart"}
+            </button>
+            <button
+              className="wishlistBtn"
+              onClick={
+                productDetails?.isWishlisted
+                  ? () => goToWishlist()
+                  : () =>
+                      addToWishlistHandler(productDetails, productDetails?._id)
+              }
+            >
+              {productDetails?.isWishlisted
+                ? "Go to Wishlist"
+                : "Add to Wishlist"}
+            </button>
           </section>
         </div>
       </div>

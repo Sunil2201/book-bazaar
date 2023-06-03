@@ -16,6 +16,8 @@ export const products = [
       para2: "As she gets to know the residents and staff of the Bartholomew, Jules finds herself drawn to fellow apartment sitter Ingrid, who comfortingly, disturbingly reminds her of the sister she lost eight years ago. When Ingrid confides that the Bartholomew is not what it seems and the dark history hidden beneath its gleaming facade is starting to frighten her, Jules brushes it off as a harmless ghost story—until the next day, when Ingrid disappears.",
       para3: "Searching for the truth about Ingrid's disappearance, Jules digs deeper into the Bartholomew's dark past and into the secrets kept within its walls. Her discovery that Ingrid is not the first apartment sitter to go missing at the Bartholomew pits Jules against the clock as she races to unmask a killer, expose the building's hidden past, and escape the Bartholomew before her temporary status becomes permanent."
     },
+    genres: ["thriller", "mystery", "mystery thriller", "fiction", "horror", "adult", "suspense"],
+    noOfPages: 381,
     img: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1540938359i/41837243.jpg",
     categoryName: "thriller",
     rating: 3.9,

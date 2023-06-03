@@ -1,3 +1,7 @@
+:root{
+  --text-color: #17bd8d;
+  --highlight-color: #9b9a99
+}
 .productDetailsContainer {
   display: flex;
   gap: 10%;
@@ -9,6 +13,7 @@
   border: 1px solid #ccc;
   padding: 1rem;
   height: fit-content;
+  width: fit-content;
   border-radius: 20px;
 }
 .individualProductDetails {
@@ -25,13 +30,13 @@
 .individualProductDetails {
   display: flex;
   flex-direction: column;
-  padding: 2%;
+  padding: 0;
 }
 .productLabels p {
   padding: 0.5rem;
   background: #e4fffb;
   border-radius: 0.5rem;
-  color: var(--secondary-color);
+  color: var(--text-color);
   text-transform: uppercase;
   font-weight: 600;
 }
@@ -57,13 +62,15 @@
 .formatsSection {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
   text-transform: capitalize;
+  padding-bottom: 2%;
+  border-bottom: 1px solid #ccc;
 }
 .formatsSection p span {
-  color: #ccc;
+  color: var(--highlight-color);
 }
 .formatsContainer {
-  padding-top: 2%;
   display: flex;
   gap: 2%;
 }
@@ -77,8 +84,8 @@
   font-weight: 500;
 }
 .selectedFormat {
-  border: 1px solid #17bd8d;
-  color: #17bd8d;
+  border: 1px solid var(--text-color);
+  color: var(--text-color);
 }
 .actionButtons {
   padding: 2% 0%;
@@ -87,4 +94,63 @@
 }
 .actionButtons button {
   width: 20%;
+}
+.moreAboutBookSection{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 2%;
+}
+.genresSection{
+  display: flex;
+  gap: 2%;
+  width: 100%;
+}
+.genresSection .label{
+  color: var(--highlight-color);
+}
+.genresContainer{
+  width: 100%;
+  display: flex;
+  gap: 1%;
+}
+.individualProductPrice{
+  margin-top: 0.5rem;
+  color: var(--text-color);
+  font-weight: bold;
+}
+.pagesSection{
+  color: var(--highlight-color);
+}
+
+@media screen and (max-width: 768px) {
+  .productDetailsContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 5%;
+  }
+  .imageContainer{
+    align-self: center;
+  }
+}
+@media screen and (max-width: 550px) {
+  .productDetailsContainer img{
+    height: 250px;
+  }
+  .individualProductDetails{
+    width: auto;
+  }
+  .formatsContainer, .genresContainer{
+    flex-wrap: wrap;
+  }
+  .genresContainer{
+    gap: 3%;
+  }
+  .formatsContainer p:nth-child(4){
+    margin-top: 2%;
+  }
+  .actionButtons button{
+    width: auto;
+  }
 }

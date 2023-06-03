@@ -35,11 +35,10 @@ function ProductCard({ product, parent }) {
     <div
       className={
         parent === "Cart" ? "individualProductCart" : "individualProduct"
-      }
-      onClick={parent === "Products" && (() => goToProductDetailPage(product._id))}
+      } 
     >
       <div className="productImageContainer">
-        <img src={product.img} alt="book-img" />
+        <img src={product.img} alt="book-img" onClick={parent === "Products" ? () => goToProductDetailPage(product._id) : ()=>{}}/>
         {parent !== "Cart" && (
           <div
             className="addToWishlistIcon"

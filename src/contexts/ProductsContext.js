@@ -17,7 +17,18 @@ export function ProductsProvider({ children }) {
   const [pageUrl, setPageUrl] = useState("");
   const [showFiltersForSmallerDevices, setShowFiltersForSmallerDevices] =
     useState(false);
-  const [productDetails, setProductDetails] = useState({})
+  const [productDetails, setProductDetails] = useState({
+    _id: "",
+    title: "",
+    author: "",
+    price: 0,
+    description: {},
+    genres: [],
+    noOfPages: 0,
+    img: "",
+    categoryName: "",
+    rating: 0,
+  })
   
 
   const navigate = useNavigate();
@@ -212,6 +223,7 @@ export function ProductsProvider({ children }) {
               : { ...item }
           )
         );
+        setProductDetails({...productDetails, isPresentInCart: true})
       } else {
         removeProductFromCart(productId);
         setProducts(
@@ -262,6 +274,7 @@ export function ProductsProvider({ children }) {
               : { ...item }
           )
         );
+        setProductDetails({...productDetails, isWishlisted: true})
       } else {
         removeProductFromWishlist(productId);
         setProducts(
@@ -387,8 +400,11 @@ export function ProductsProvider({ children }) {
 
   const fetchProductDetails = async(productId) => {
     try {
-      const res = await fetch(`/api/products/${productId}`)
-      setProductDetails(await res.json());
+      let res = await fetch(`/api/products/${productId}`)
+      const {product} = await res.json()
+      const isProductWishlisted = ([...products].find(({_id}) => _id === productId))?.isWishlisted
+      const isProductPresentInCart = ([...products].find(({_id}) => _id === productId))?.isPresentInCart
+      setProductDetails({...product, isWishlisted: isProductWishlisted, isPresentInCart: isProductPresentInCart});
     } catch (error) {
       console.log(error.message);
     }

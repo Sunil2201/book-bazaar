@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
@@ -8,8 +8,12 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(tokenFromLocalStorage?.token);
   const userFromLocalStorage = JSON.parse(localStorage.getItem("user"));
   const [user, setUser] = useState(userFromLocalStorage?.user);
-  const navigate = useNavigate()
-  const location = useLocation()
+  const userAddressFromLocalStorage = JSON.parse(
+    localStorage.getItem("address")
+  );
+  const [address, setAddress] = useState(userAddressFromLocalStorage);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleUserLogin = async (email, password) => {
     if (email !== "" && password !== "") {
@@ -67,22 +71,47 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const getUserAddress = async () => {
+    if (token) {
+      try {
+        const res = await fetch("/api/user/address", {
+          headers: {
+            "Content-Type": "application/json",
+            authorization: token
+          },
+        });
+        const resJson = await res?.json();
+        if(res.status === 200){
+          localStorage.setItem("address", JSON.stringify(resJson?.address));
+          setAddress([...address, resJson?.address])
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+  };
+
+  useEffect(() => {
+    getUserAddress()
+  }, [])
+
   const handleUserLogout = () => {
-    localStorage.removeItem("auth")
-    localStorage.removeItem("user")
-    setToken("")
-    setUser({})
-    navigate("/")
-  }
+    localStorage.removeItem("auth");
+    localStorage.removeItem("user");
+    setToken("");
+    setUser({});
+    navigate("/");
+  };
 
   return (
     <AuthContext.Provider
       value={{
         token,
         user,
+        address,
         handleUserLogin,
         handleUserSignup,
-        handleUserLogout
+        handleUserLogout,
       }}
     >
       {children}
