@@ -3,11 +3,18 @@ import { ProductsContext } from "../../contexts/ProductsContext";
 import "./Cart.css"
 import "../../components/ProductCard/ProductCard.css"
 import ProductCard from "../../components/ProductCard/ProductCard";
+import { useNavigate } from "react-router-dom";
 
 function Cart() {
   const { cart } = useContext(ProductsContext);
   const noOfItemsInCart = cart.length;
   const [totalPrice, setTotalPrice] = useState(0)
+
+  const navigate = useNavigate()
+
+  const goToCheckout = () => {
+    navigate("/checkout")
+  }
 
   useEffect(() => {
     setTotalPrice([...cart].reduce((total, product) => total + product.qty*product.price, 0))
@@ -46,7 +53,7 @@ function Cart() {
             <h3>900</h3>
           </div>
           <p className="amountSavedSummary">You will save 100 on this order</p>
-          <button>Place Order</button>
+          <button onClick={goToCheckout}>Checkout</button>
         </div>
       </div>
     </div>

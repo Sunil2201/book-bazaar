@@ -83,13 +83,73 @@ export function AuthProvider({ children }) {
         const resJson = await res?.json();
         if(res.status === 200){
           localStorage.setItem("address", JSON.stringify(resJson?.address));
-          setAddress([...address, resJson?.address])
+          setAddress(resJson?.address)
         }
       } catch (error) {
         console.log(error.message);
       }
     }
   };
+
+  const addNewAddressToList = async(address) => {
+    if(token){
+      try {
+        const res = await fetch("api/user/address", {
+          method: "POST",
+          mode: "cors",
+          cache: "no-cache",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: token,
+          },
+          body: JSON.stringify({address})
+        })
+        const {address: addressList} = await res.json()
+        setAddress(addressList)
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+  }
+
+  const editExistingAddress = async(address, addressId) => {
+    if(token){
+      try {
+        const res = await fetch(`api/user/address/${addressId}`, {
+          method: "POST",
+          mode: "cors",
+          cache: "no-cache",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: token,
+          },
+          body: JSON.stringify({address})
+        })
+        const {address: addressList} = await res.json()
+        setAddress(addressList)
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+  }
+
+  const deleteAddressFromList = async(addressId) => {
+    if(token){
+      try {
+        const res = await fetch(`api/user/address/${addressId}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: token,
+          },
+        })
+        const {address: addressList} = await res.json()
+        setAddress(addressList)
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+  }
 
   useEffect(() => {
     getUserAddress()
@@ -112,6 +172,9 @@ export function AuthProvider({ children }) {
         handleUserLogin,
         handleUserSignup,
         handleUserLogout,
+        addNewAddressToList,
+        editExistingAddress,
+        deleteAddressFromList
       }}
     >
       {children}

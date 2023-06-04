@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { MdVisibility } from "react-icons/md";
 import "../index.css";
 import { AuthContext } from "../contexts/AuthContext";
+import { Link } from "react-router-dom";
 
 function SignIn() {
   const {handleUserLogin} = useContext(AuthContext)
@@ -55,7 +56,7 @@ function SignIn() {
         <button>Test user</button>
         <div className="otherMethodOfAuth">
           <h3>Don't have an account?</h3>
-          <p>Sign Up Instead</p>
+          <p> <Link to="/signup">Sign Up Instead</Link></p>
         </div>
       </main>
     </div>

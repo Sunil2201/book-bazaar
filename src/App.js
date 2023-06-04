@@ -11,6 +11,7 @@ import Cart from "./pages/Cart/Cart.jsx";
 import Wishlist from "./pages/Wishlist/Wishlist.jsx";
 import UserProfile from "./pages/UserProfile/UserProfile";
 import ProductDetail from "./pages/ProductDetail/ProductDetail";
+import Checkout from "./pages/Checkout/Checkout";
 
 function App() {
   return (
@@ -52,6 +53,14 @@ function App() {
           <RequiresAuth>
             <ProductDetail />
           </RequiresAuth>}
+        />
+        <Route 
+          path="/checkout"
+          element={
+            <RequiresAuth>
+              <Checkout />
+            </RequiresAuth>
+          }
         />
       </Routes>
     </div>
