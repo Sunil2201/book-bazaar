@@ -7,18 +7,16 @@ import { NavLink } from "react-router-dom";
 
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
 
-const images = [`${process.env.PUBLIC_URL}/slider-image-1.jpg`, `${process.env.PUBLIC_URL}/slider-image-1.jpg`];
+const images = [`${process.env.PUBLIC_URL}/slider-image-1.jpg`, `${process.env.PUBLIC_URL}/slider-image-2.jpg`];
 
 function Slider() {
   return (
     images.length > 0 && (
       <Swiper
         slidesPerView={1}
-        navigation
         pagination={{ clickable: true }}
         spaceBetween={20}
-        className="sliderContainer"
-        style={{height: "400px"}}
+        className="swiper-container"
       >
         {images.map((img, id) => (
           <SwiperSlide key={id}>
@@ -28,8 +26,6 @@ function Slider() {
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
-                width: "100%",
-                height: "400px",
               }}
               className="swiperSlideDiv"
             >

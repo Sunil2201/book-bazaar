@@ -1,5 +1,17 @@
-.mainContent{
-    display: flex;
-    flex-direction: column;
-    padding: 2%;
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  padding-top: 2%;
+}
+.homePageContainer {
+  display: flex;
+  flex-direction: column;
+}
+.mainSection {
+  padding: 2rem;
+}
+@media screen and (max-width: 768px) {
+  .mainSection {
+    padding: 1rem;
+  }
 }

@@ -8,17 +8,23 @@ footer {
 .generalInfo {
   display: flex;
   justify-content: space-between;
-  padding: 2.5% 8%;
+  padding: 2.5% 9%;
 }
 .aboutApp,
-.personalInfo, .copyrightSection {
+.personalInfo,
+.copyrightSection {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   text-align: left;
 }
-.copyrightSection{
-    border-top: 0.2px solid #F9FCFB;
-    padding: 1% 0%;
-    text-align: center;
+.copyrightSection {
+  border-top: 0.2px solid #f9fcfb;
+  padding: 1% 0%;
+  text-align: center;
+}
+@media screen and (max-width: 550px) {
+  .generalInfo{
+    padding: 2.5% 4%;
+  }
 }
