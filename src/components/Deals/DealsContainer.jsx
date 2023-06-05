@@ -21,11 +21,12 @@ function DealsContainer() {
     <div className="dealsContainer">
       {deals.map(({ heading, description, img }) => {
         return (
-          <div className="individualDeal">
-            <img src={img} alt="an-img" />
-            <p>{heading}</p>
-            <h2>{description}</h2>
-            <button><NavLink to="/products">Shop now <SlArrowRight/></NavLink></button>
+          <div className="individualDeal" style={{ backgroundImage: `url(${img})` }}>
+            <div className="dealContent">
+              <p>{heading}</p>
+              <h2>{description}</h2>
+              <button><NavLink to="/products">Shop now <SlArrowRight/></NavLink></button>
+            </div>
           </div>
         );
       })}

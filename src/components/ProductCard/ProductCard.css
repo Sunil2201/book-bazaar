@@ -1,13 +1,15 @@
-.individualProduct {
+.individualProduct, .individualProductCart {
   display: flex;
   flex-direction: column;
   margin-top: 1.5%;
   cursor: pointer;
+  background-color: #fff; 
+  padding: 1.5%; 
+  border-radius: 10px; 
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease-in-out;
 }
-.individualProductCart{
-  display: flex;
-  margin-top: 1.5%;
-}
+
 .productImageContainer {
   position: relative;
 }
@@ -76,6 +78,12 @@
   border-radius: 10px;
   color: white;
   background: var(--secondary-color);
+  transition: background 0.4s ease-out, color 0.3s ease-out;
+
+}
+.cartBtn:hover{
+  background: #055245;
+  color: white;
 }
 .quantityIncrease{
   display: flex;

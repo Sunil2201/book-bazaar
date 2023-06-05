@@ -43,7 +43,6 @@
   border-radius: 20px;
   background: var(--search-box-color);
   border: none;
-  color: #ccc;
   font-size: 14px;
 }
 .navContainer .headerActions {

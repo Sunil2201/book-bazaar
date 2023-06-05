@@ -17,6 +17,8 @@
 .image-container {
   margin-top: 2%;
   display: flex;
+  justify-content: space-between;
+  row-gap: 1.5rem;
   flex-wrap: wrap;
 }
 .rounded-image {
@@ -29,7 +31,6 @@
   width: 23%;
   display: flex;
   flex-direction: column;
-  margin: 1% 1% 1% 0%;
   justify-content: center;
   cursor: pointer;
 }
@@ -41,12 +42,15 @@
 }
 @media (max-width: 768px) {
   .bookCategoriesContainer {
-    padding: 2% 5%;
+    padding: 2% 3%;
     
   }
   .singleCategory {
     width: 31.33%;
-    margin: 1%;
+  }
+  .image-container{
+    gap: 1.2rem;
+    justify-content: unset;
   }
 }
 
@@ -56,9 +60,11 @@
   }
   .singleCategory {
     width: 48%;
-    margin: 2% 2% 2% 0%;
   }
   .singleCategory img{
     height: 163.16px;
+  }
+  .image-container{
+    gap: 0.6rem;
   }
 }

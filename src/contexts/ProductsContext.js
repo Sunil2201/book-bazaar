@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 export const ProductsContext = createContext();
 
 export function ProductsProvider({ children }) {
+  const [fetchedProducts, setFetchedProducts] = useState([])
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [priceFilter, setPriceFilter] = useState(500);
@@ -28,8 +29,8 @@ export function ProductsProvider({ children }) {
     img: "",
     categoryName: "",
     rating: 0,
-  })
-  
+  });
+  const [searchedKeyword, setSearchedKeyword] = useState("");
 
   const navigate = useNavigate();
   const { token } = useContext(AuthContext);
@@ -44,6 +45,12 @@ export function ProductsProvider({ children }) {
           isPresentInCart: false,
         }))
       );
+      setFetchedProducts(
+        modifiedResponse.products.map((product) => ({
+          ...product,
+          isPresentInCart: false,
+        }))
+      )
     } catch (error) {
       console.error(error);
     }
@@ -223,7 +230,7 @@ export function ProductsProvider({ children }) {
               : { ...item }
           )
         );
-        setProductDetails({...productDetails, isPresentInCart: true})
+        setProductDetails({ ...productDetails, isPresentInCart: true });
       } else {
         removeProductFromCart(productId);
         setProducts(
@@ -274,7 +281,7 @@ export function ProductsProvider({ children }) {
               : { ...item }
           )
         );
-        setProductDetails({...productDetails, isWishlisted: true})
+        setProductDetails({ ...productDetails, isWishlisted: true });
       } else {
         removeProductFromWishlist(productId);
         setProducts(
@@ -398,17 +405,39 @@ export function ProductsProvider({ children }) {
     }
   };
 
-  const fetchProductDetails = async(productId) => {
+  const fetchProductDetails = async (productId) => {
     try {
-      let res = await fetch(`/api/products/${productId}`)
-      const {product} = await res.json()
-      const isProductWishlisted = ([...products].find(({_id}) => _id === productId))?.isWishlisted
-      const isProductPresentInCart = ([...products].find(({_id}) => _id === productId))?.isPresentInCart
-      setProductDetails({...product, isWishlisted: isProductWishlisted, isPresentInCart: isProductPresentInCart});
+      let res = await fetch(`/api/products/${productId}`);
+      const { product } = await res.json();
+      const isProductWishlisted = [...products].find(
+        ({ _id }) => _id === productId
+      )?.isWishlisted;
+      const isProductPresentInCart = [...products].find(
+        ({ _id }) => _id === productId
+      )?.isPresentInCart;
+      setProductDetails({
+        ...product,
+        isWishlisted: isProductWishlisted,
+        isPresentInCart: isProductPresentInCart,
+      });
     } catch (error) {
       console.log(error.message);
     }
-  }
+  };
+
+  const searchForProducts = (e) => {
+    setSearchedKeyword(e.target.value);
+    setTimeout(() => {
+      if (searchedKeyword.length > 0) {
+        navigate("/products");
+        setProducts(
+          [...fetchedProducts].filter(({ title }) =>
+            title.split(" ").join("").toLowerCase().includes(searchedKeyword.split(" ").join("").toLowerCase())
+          )
+        );
+      }
+    }, 500);
+  };
 
   return (
     <ProductsContext.Provider
@@ -425,6 +454,7 @@ export function ProductsProvider({ children }) {
         pageUrl,
         showFiltersForSmallerDevices,
         productDetails,
+        searchedKeyword,
         setPageUrl,
         handleSlider,
         handleCategory,
@@ -440,7 +470,8 @@ export function ProductsProvider({ children }) {
         moveProductsFromWishlistToCart,
         updateProductQuantityInCart,
         moveProductFromCartToWishlist,
-        fetchProductDetails
+        fetchProductDetails,
+        searchForProducts,
       }}
     >
       {children}

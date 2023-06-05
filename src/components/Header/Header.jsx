@@ -11,7 +11,7 @@ import { NavLink } from "react-router-dom";
 import { ProductsContext } from "../../contexts/ProductsContext";
 
 function Header() {
-  const { pageUrl, toggleFilterContainer } = useContext(ProductsContext);
+  const { pageUrl, toggleFilterContainer, searchedKeyword, searchForProducts } = useContext(ProductsContext);
 
   return (
     <div className="headerContainer">
@@ -33,7 +33,7 @@ function Header() {
 
         <div className="searchContainer">
           <BiSearch className="searchIcon" />
-          <input type="text" id="" placeholder="Search Products..." />
+          <input type="text" value={searchedKeyword} onChange={searchForProducts} id="" placeholder="Search Products..." />
         </div>
 
         <div className="headerActions">
@@ -52,7 +52,7 @@ function Header() {
 
       <div className="searchContainer searchForSmallerScreens">
         <BiSearch className="searchIcon" />
-        <input type="text" id="" placeholder="Search Products..." />
+        <input type="text" value={searchedKeyword} onChange={searchForProducts} id="" placeholder="Search Products..." />
       </div>
     </div>
   );

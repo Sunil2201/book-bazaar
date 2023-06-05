@@ -50,6 +50,13 @@ export const categories = [
   },
   {
     _id: uuid(),
+    categoryName: "dystopian",
+    description:
+      "The dystopian genre explores dark and oppressive future societies, highlighting the consequences of societal flaws and challenging the status quo.",
+    isSelected: false
+  },
+  {
+    _id: uuid(),
     categoryName: "non-fiction",
     description:
       "Non-fiction is writing that gives information or describes real events, rather than telling a story.",

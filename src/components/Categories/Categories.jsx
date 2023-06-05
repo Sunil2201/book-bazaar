@@ -14,6 +14,7 @@ function Categories() {
     `${process.env.PUBLIC_URL}/historical-fiction.jpeg`,
     `${process.env.PUBLIC_URL}/non-fiction.jpg`,
     `${process.env.PUBLIC_URL}/thriller-genre.png`,
+    `${process.env.PUBLIC_URL}/dystopian.png`,
     `${process.env.PUBLIC_URL}/young-adult.jpg`,
   ];
 

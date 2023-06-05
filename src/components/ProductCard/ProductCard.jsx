@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef, useEffect } from "react";
 import { ProductsContext } from "../../contexts/ProductsContext";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import Rating from "../Rating/Rating";
@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import "./ProductCard.css";
 
 function ProductCard({ product, parent }) {
+  const cardRef = useRef(null);
+
   const {
     addToWishlistHandler,
     addToCartHandler,
@@ -29,16 +31,76 @@ function ProductCard({ product, parent }) {
 
   const goToProductDetailPage = (productId) => {
     navigate(`/products/${productId}`);
-  }
+  };
+  
+  useEffect(() => {
+    const card = cardRef.current;
+    if (card) {
+      const buttons = card.querySelectorAll("button");
+      const handleMouseMove = (e) => {
+        let box = card.getBoundingClientRect();
+        let x = e.clientX - box.left;
+        let y = e.clientY - box.top;
+
+        let rotateX = ((y / box.height) * 100 - 50) / 3;
+        let rotateY = ((x / box.width) * 100 - 50) / -3;
+
+        card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+        card.style.transition = "transform 0.5s ease-out";
+      };
+
+      const handleMouseLeave = (e) => {
+        card.style.transform = `rotateX(0) rotateY(0) scale(1)`;
+        card.style.transition = "transform 0.5s ease-out";
+      };
+
+      const handleButtonMouseOver = () => {
+        card.removeEventListener("mousemove", handleMouseMove);
+        card.style.transform = `rotateX(0) rotateY(0) scale(1.05)`;
+        card.style.transition = "transform 0.5s ease-out";
+      };
+
+      const handleButtonMouseOut = () => {
+        card.addEventListener("mousemove", handleMouseMove);
+      };
+
+      card.addEventListener("mousemove", handleMouseMove);
+      card.addEventListener("mouseleave", handleMouseLeave);
+
+      buttons.forEach((button) => {
+        button.addEventListener("mouseover", handleButtonMouseOver);
+        button.addEventListener("mouseout", handleButtonMouseOut);
+      });
+
+      return () => {
+        card.removeEventListener("mousemove", handleMouseMove);
+        card.removeEventListener("mouseleave", handleMouseLeave);
+
+        buttons.forEach((button) => {
+          button.removeEventListener("mouseover", handleButtonMouseOver);
+          button.removeEventListener("mouseout", handleButtonMouseOut);
+        });
+      };
+    }
+  }, []);
 
   return (
     <div
       className={
         parent === "Cart" ? "individualProductCart" : "individualProduct"
-      } 
+      }
+      ref={cardRef}
     >
       <div className="productImageContainer">
-        <img src={product.img} alt="book-img" onClick={parent === "Products" ? () => goToProductDetailPage(product._id) : ()=>{}}/>
+        <img
+          src={product.img}
+          alt="book-img"
+          onClick={
+            parent === "Products"
+              ? () => goToProductDetailPage(product._id)
+              : () => {}
+          }
+        />
         {parent !== "Cart" && (
           <div
             className="addToWishlistIcon"

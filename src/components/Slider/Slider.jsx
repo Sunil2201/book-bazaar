@@ -26,6 +26,7 @@ function Slider() {
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
+                opacity: 0.8
               }}
               className="swiperSlideDiv"
             >

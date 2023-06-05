@@ -1,30 +1,35 @@
 :root {
   --background-color: #101313;
 }
+
 footer {
   background: var(--background-color);
   color: white;
-}
-.generalInfo {
-  display: flex;
-  justify-content: space-between;
-  padding: 2.5% 9%;
-}
-.aboutApp,
-.personalInfo,
-.copyrightSection {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  text-align: left;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5% 0;
 }
-.copyrightSection {
-  border-top: 0.2px solid #f9fcfb;
-  padding: 1% 0%;
-  text-align: center;
+
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+
+.socialIcons {
+  display: flex;
+  gap: 1rem;
+  padding-top: 1rem;
+}
+
+.socialIcons a {
+  color: white;
+}
+
 @media screen and (max-width: 550px) {
-  .generalInfo{
+  footer{
     padding: 2.5% 4%;
   }
 }
