@@ -426,13 +426,14 @@ export function ProductsProvider({ children }) {
   };
 
   const searchForProducts = (e) => {
-    setSearchedKeyword(e.target.value);
+    const enteredValue = e.target.value
+    setSearchedKeyword(enteredValue);
     setTimeout(() => {
-      if (searchedKeyword.length > 0) {
+      if (enteredValue.length >= 0) {
         navigate("/products");
         setProducts(
           [...fetchedProducts].filter(({ title }) =>
-            title.split(" ").join("").toLowerCase().includes(searchedKeyword.split(" ").join("").toLowerCase())
+            title.toLowerCase().includes(enteredValue.toLowerCase())
           )
         );
       }
