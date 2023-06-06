@@ -2,10 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import "./Categories.css";
 import { NavLink } from "react-router-dom";
 import { ProductsContext } from "../../contexts/ProductsContext";
+import Spinner from "../Spinner";
 
 function Categories() {
   const [categories, setCategories] = useState([]);
-  const {viewParticularCategoryBooks} = useContext(ProductsContext)
+  const {loading, viewParticularCategoryBooks} = useContext(ProductsContext)
 
   const categoryImages = [
     `${process.env.PUBLIC_URL}/fantasy.jpg`,
@@ -50,6 +51,10 @@ function Categories() {
   useEffect(() => {
     fetchCategories();
   }, []);
+
+  if(loading){
+    return <Spinner />
+  }
 
   return (
     <div className="bookCategoriesContainer">

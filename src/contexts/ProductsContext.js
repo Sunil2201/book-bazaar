@@ -1,11 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const ProductsContext = createContext();
 
 export function ProductsProvider({ children }) {
-  const [fetchedProducts, setFetchedProducts] = useState([])
+  const [fetchedProducts, setFetchedProducts] = useState([]);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [priceFilter, setPriceFilter] = useState(500);
@@ -31,9 +32,11 @@ export function ProductsProvider({ children }) {
     rating: 0,
   });
   const [searchedKeyword, setSearchedKeyword] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [productLoading, setProductLoading] = useState(true);
 
   const navigate = useNavigate();
-  const { token } = useContext(AuthContext);
+  const { token, setToken, setUser } = useContext(AuthContext);
 
   const getProducts = async () => {
     try {
@@ -50,7 +53,8 @@ export function ProductsProvider({ children }) {
           ...product,
           isPresentInCart: false,
         }))
-      )
+      );
+      setLoading(false);
     } catch (error) {
       console.error(error);
     }
@@ -61,6 +65,7 @@ export function ProductsProvider({ children }) {
       const response = await fetch("/api/categories");
       const normalRes = await response.json();
       setCategories(normalRes.categories);
+      setLoading(false);
     } catch (error) {
       console.error(error);
     }
@@ -125,6 +130,21 @@ export function ProductsProvider({ children }) {
       setCart(cartItems);
     } catch (error) {
       console.error(error.message);
+      toast.error("Couldn't add the product to card");
+    }
+  };
+
+  const getCartProducts = async () => {
+    try {
+      const res = await fetch("/api/user/cart", {
+        headers: { authorization: token },
+      });
+      if (res.status === 200) {
+        const {cart: cartItems} = await res.json();
+        setCart(cartItems)
+      }
+    } catch (err) {
+      console.log(err.message);
     }
   };
 
@@ -141,10 +161,15 @@ export function ProductsProvider({ children }) {
       setCart(cartItems);
     } catch (error) {
       console.log(error.message);
+      toast.error("Couldn't remove the product to card");
     }
   };
 
-  const updateProductQuantityInCart = async (productId, actionType) => {
+  const updateProductQuantityInCart = async (
+    product,
+    productId,
+    actionType
+  ) => {
     try {
       let response = await fetch(`/api/user/cart/${productId}`, {
         method: "POST",
@@ -160,8 +185,10 @@ export function ProductsProvider({ children }) {
       });
       let { cart: cartItems } = await response.json();
       setCart(cartItems);
+      toast.success(`${product.title}'s quantity updated in cart!`);
     } catch (error) {
       console.log(error.message);
+      toast.error("Could'nt update the product quantity");
     }
   };
 
@@ -184,9 +211,24 @@ export function ProductsProvider({ children }) {
       }));
       setWishList(wishlistItems);
     } catch (error) {
-      console.error(error);
+      console.error(error.message);
+      toast.error("Couldn't add the product to wishlist");
     }
   };
+
+  const getWishlistProducts = async () => {
+    try {
+      const res = await fetch("/api/user/wishlist", {
+        headers: { authorization: token },
+      });
+      if (res.status === 200) {
+        const {wishlist: wishlistItems} = await res.json();
+        setWishList(wishlistItems);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
 
   const removeProductFromWishlist = async (productId) => {
     try {
@@ -206,6 +248,7 @@ export function ProductsProvider({ children }) {
       setWishList(wishlist);
     } catch (error) {
       console.log(error.message);
+      toast.error("Couldn't remove the product from wishlist");
     }
   };
 
@@ -231,6 +274,7 @@ export function ProductsProvider({ children }) {
           )
         );
         setProductDetails({ ...productDetails, isPresentInCart: true });
+        toast.success(`${product.title} added to cart successfully!`);
       } else {
         removeProductFromCart(productId);
         setProducts(
@@ -247,6 +291,7 @@ export function ProductsProvider({ children }) {
               : { ...product }
           )
         );
+        toast.success(`${product.title} removed from cart successfully!`);
       }
     } else {
       navigate("/signin");
@@ -282,6 +327,7 @@ export function ProductsProvider({ children }) {
           )
         );
         setProductDetails({ ...productDetails, isWishlisted: true });
+        toast.success(`${product.title} added to wishlist successfully!`);
       } else {
         removeProductFromWishlist(productId);
         setProducts(
@@ -298,6 +344,7 @@ export function ProductsProvider({ children }) {
               : { ...item }
           )
         );
+        toast.success(`${product.title} removed from wishlist successfully!`);
       }
     } else {
       navigate("/signin");
@@ -308,8 +355,8 @@ export function ProductsProvider({ children }) {
     setCategories(
       [...categories].map((category) =>
         category._id === idOfselectedCategory
-          ? { ...category, isSelected: !category.isSelected }
-          : { ...category }
+          ? { ...category, isSelected: true }
+          : { ...category, isSelected: false }
       )
     );
 
@@ -317,17 +364,7 @@ export function ProductsProvider({ children }) {
       ({ _id }) => _id === idOfselectedCategory
     );
 
-    selectedCategory.isSelected
-      ? setSelectedCategories(
-          [...selectedCategories].filter(
-            (category) => category !== selectedCategory.categoryName
-          )
-        )
-      : setSelectedCategories([
-          ...selectedCategories,
-          selectedCategory.categoryName,
-        ]);
-
+    setSelectedCategories([selectedCategory.categoryName]);
     navigate("/products");
   };
 
@@ -339,6 +376,8 @@ export function ProductsProvider({ children }) {
     setSelectedCategories([]);
     setRatingFilter("");
     setSortingOrder("");
+    setProducts([...fetchedProducts]);
+    setSearchedKeyword("");
   };
 
   const handleMouseEnter = (productId) => {
@@ -385,21 +424,26 @@ export function ProductsProvider({ children }) {
     }
   };
 
-  const moveProductFromCartToWishlist = (product, productId) => {
+  const addProductFromCartToWishlist = (product, productId) => {
     if (token) {
       const productToMoveFromCartToWishlist = {
         ...product,
-        isPresentInCart: false,
+        isPresentInCart: true,
       };
       addToWishlist(productToMoveFromCartToWishlist);
-      removeProductFromCart(productId);
       setProducts(
         [...products].map((product) =>
           product._id === productId
-            ? { ...product, isPresentInCart: false, isWishlisted: true }
+            ? { ...product, isPresentInCart: true, isWishlisted: true }
             : { ...product }
         )
       );
+      setCart(
+        [...cart].map((item) =>
+          item._id === productId ? { ...item, isWishlisted: true } : { ...item }
+        )
+      );
+      toast.success(`${product.title} added to wishlist successfully!`);
     } else {
       navigate("/signin");
     }
@@ -420,13 +464,14 @@ export function ProductsProvider({ children }) {
         isWishlisted: isProductWishlisted,
         isPresentInCart: isProductPresentInCart,
       });
+      setProductLoading(false);
     } catch (error) {
       console.log(error.message);
     }
   };
 
   const searchForProducts = (e) => {
-    const enteredValue = e.target.value
+    const enteredValue = e.target.value;
     setSearchedKeyword(enteredValue);
     setTimeout(() => {
       if (enteredValue.length >= 0) {
@@ -439,6 +484,35 @@ export function ProductsProvider({ children }) {
       }
     }, 500);
   };
+
+  const isProductPresentInCart = (productId) => {
+    return [...cart].find(({_id}) => _id === productId)
+  }
+
+  const isProductPresentInWishlist = (productId) => {
+    return [...wishList].find(({_id}) => _id === productId)
+  }
+
+  const handleUserLogout = () => {
+    localStorage.removeItem("auth");
+    localStorage.removeItem("user");
+    localStorage.removeItem("address");
+    setToken("");
+    setUser({});
+    navigate("/");
+    clearAllFilters();
+    toast.success("You have been logged out successfully.")
+  }
+
+  const showSummerSaleProducts = () => {
+    setProducts([...fetchedProducts].filter(({discountPercent}) => discountPercent === 25))
+    navigate("/products");
+  }
+
+  const showEverydaySaleProducts = () => {
+    setProducts([...fetchedProducts].filter(({discountPercent}) => discountPercent === 45))
+    navigate("/products");
+  }
 
   return (
     <ProductsContext.Provider
@@ -456,7 +530,12 @@ export function ProductsProvider({ children }) {
         showFiltersForSmallerDevices,
         productDetails,
         searchedKeyword,
+        loading,
+        productLoading,
+        setCategories,
+        setSelectedCategories,
         setPageUrl,
+        setProductLoading,
         handleSlider,
         handleCategory,
         handleRating,
@@ -470,9 +549,16 @@ export function ProductsProvider({ children }) {
         toggleFilterContainer,
         moveProductsFromWishlistToCart,
         updateProductQuantityInCart,
-        moveProductFromCartToWishlist,
+        addProductFromCartToWishlist,
         fetchProductDetails,
         searchForProducts,
+        getCartProducts,
+        getWishlistProducts,
+        handleUserLogout,
+        isProductPresentInCart,
+        isProductPresentInWishlist,
+        showSummerSaleProducts,
+        showEverydaySaleProducts
       }}
     >
       {children}

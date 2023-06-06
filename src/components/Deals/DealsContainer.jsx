@@ -1,7 +1,8 @@
-import React from "react";
-import "./DealsContainer.css"
+import React, { useContext } from "react";
+import "./DealsContainer.css";
 import { NavLink } from "react-router-dom";
-import {SlArrowRight} from "react-icons/sl"
+import { SlArrowRight } from "react-icons/sl";
+import { ProductsContext } from "../../contexts/ProductsContext";
 
 const deals = [
   {
@@ -12,20 +13,34 @@ const deals = [
   {
     heading: "Novel Every Day!",
     description: "Sale 45% OFF",
-    img: `${process.env.PUBLIC_URL}/novelEveryDay.png`
+    img: `${process.env.PUBLIC_URL}/novelEveryDay.png`,
   },
 ];
 
 function DealsContainer() {
+
+  const {showSummerSaleProducts, showEverydaySaleProducts} = useContext(ProductsContext)
+
   return (
     <div className="dealsContainer">
-      {deals.map(({ heading, description, img }) => {
+      {deals.map(({ heading, description, img }, idx) => {
         return (
-          <div className="individualDeal" style={{ backgroundImage: `url(${img})` }}>
+          <div
+            className="individualDeal"
+            style={{ backgroundImage: `url(${img})` }}
+          >
             <div className="dealContent">
               <p>{heading}</p>
               <h2>{description}</h2>
-              <button><NavLink to="/products">Shop now <SlArrowRight/></NavLink></button>
+              <button
+                onClick={
+                  idx === 0
+                    ? () => showSummerSaleProducts()
+                    : () => showEverydaySaleProducts()
+                }
+              >
+                Shop now <SlArrowRight />
+              </button>
             </div>
           </div>
         );

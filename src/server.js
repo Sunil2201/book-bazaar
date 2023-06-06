@@ -44,6 +44,7 @@ export function makeServer({ environment = "development" } = {}) {
       user: Model,
       cart: Model,
       wishlist: Model,
+      address: Model,
     },
 
     // Runs on the start of the server

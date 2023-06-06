@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ProductsContext } from "../../contexts/ProductsContext";
 import "./ProductDetail.css";
 import Rating from "../../components/Rating/Rating";
+import Spinner from "../../components/Spinner";
 
 function ProductDetail() {
   const { productId } = useParams();
@@ -12,6 +13,8 @@ function ProductDetail() {
     productDetails,
     addToWishlistHandler,
     addToCartHandler,
+    productLoading,
+    setProductLoading,
   } = useContext(ProductsContext);
 
   const [selectedFormat, setSelectedFormat] = useState("audio");
@@ -24,6 +27,7 @@ function ProductDetail() {
 
   useEffect(() => {
     fetchProductDetails(productId);
+    setProductLoading(true);
   }, []);
 
   const goToWishlist = () => {
@@ -33,6 +37,18 @@ function ProductDetail() {
   const goToCart = () => {
     navigate("/cart");
   };
+
+  const calculateDiscountedPrice = (discountRate, originalPrice) => {
+    const discountPercentage = discountRate / 100;
+    const discountAmount = originalPrice * discountPercentage;
+    const discountedPrice = originalPrice - discountAmount;
+
+    return Math.round(discountedPrice);
+  };
+
+  if (productLoading) {
+    return <Spinner />;
+  }
 
   return (
     <main className="individualProductPage">
@@ -44,8 +60,8 @@ function ProductDetail() {
         <div className="individualProductDetails">
           <section className="topSection">
             <div className="productLabels">
-              <p>In Stock</p>
-              <p>Discount</p>
+              {productDetails?.isOutOfStock ? <p className="outOfStockProductDetail">Out of stock</p> : <p className="normalLabel">In Stock</p>}
+              {productDetails.discountPercent > 0 && <p className="normalLabel">Discount</p>} 
             </div>
             <h2>{productDetails?.title}</h2>
             <div className="bookInfoDiv">
@@ -81,15 +97,30 @@ function ProductDetail() {
                 );
               })}
             </div>
-            <p className="individualProductPrice">Rs {productDetails?.price}</p>
+            {productDetails.discountPercent > 0 ? (
+              <div className="productPricingDiv">
+                <p className="productFinalPrice">{`Rs ${calculateDiscountedPrice(
+                  productDetails.discountPercent,
+                  productDetails.price
+                )}`}</p>
+                <p className="productOriginalPrice">{`Rs ${productDetails.price}`}</p>
+                <p className="productDiscount">
+                  {" "}
+                  {`(${productDetails.discountPercent}% OFF)`}
+                </p>
+              </div>
+            ) : (
+              <p className="individualProductPrice">{`Rs ${productDetails.price}`}</p>
+            )}
           </section>
           <section className="moreAboutBookSection">
             <div className="genresSection">
               <p className="label">Genres</p>
               <div className="genresContainer">
-                {productDetails?.genres.map((genre) => {
-                  return <p>{genre}</p>;
-                })}
+                {productDetails?.genres.length &&
+                  productDetails?.genres.map((genre) => {
+                    return <p>{genre}</p>;
+                  })}
               </div>
             </div>
             <p className="pagesSection">{productDetails?.noOfPages} pages </p>

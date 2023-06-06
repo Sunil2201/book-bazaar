@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { MdVisibility } from "react-icons/md";
 import "../index.css";
 import { AuthContext } from "../contexts/AuthContext";
@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 function SignIn() {
   const {handleUserLogin} = useContext(AuthContext)
-  
+ 
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",

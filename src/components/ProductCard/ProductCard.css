@@ -9,7 +9,11 @@
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease-in-out;
 }
-
+.individualProductCart{
+  display: flex;
+  flex-direction: row;
+  width: 112%;
+}
 .productImageContainer {
   position: relative;
 }
@@ -65,9 +69,16 @@
   width: 300px;
 }
 
-.productPrice {
+.productPrice, .productFinalPrice, .productDiscount, .productOriginalPrice{
   margin: 0.5rem 0rem;
   color: var(--secondary-color);
+}
+.productDiscount{
+  color: red;
+}
+.productOriginalPrice{
+  color: gray;
+  text-decoration: line-through;
 }
 
 .cartBtn, .wishlistBtn {
@@ -130,6 +141,25 @@ input[type=number]::-webkit-outer-spin-button {
   background: #eee;
   cursor: pointer;
 }
+.pricingDiv{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.individualProductCart .pricingDiv{
+  display: flex;
+  align-items: center;
+  justify-content: initial;
+  gap: 0.5rem;
+}
+.outOfStock{
+  padding: 3%;
+  width: fit-content;
+  border-radius: 5px;
+  background: #f9d5cb;
+  color: #6c6c6c;
+  margin-bottom: 5%;
+}
 
 @media screen and (max-width: 768px) {
   .bookTitleCart{
@@ -142,6 +172,7 @@ input[type=number]::-webkit-outer-spin-button {
   }
   .quantityIncrease{
     gap: 0.5rem;
+    padding-bottom: 0.3rem;
   }
   .productDetailsCart{
     padding: 2%;
@@ -154,21 +185,45 @@ input[type=number]::-webkit-outer-spin-button {
     flex-direction: row;
     align-items: flex-start;
     gap: 2%;
+    width: 100%;
   }
-  .individualProduct img, .individualProductCart img {
-    height: 240px;
-    width: 160px;
+  .individualProductCart{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .bookTitleCart{
+    flex-grow: 1;
+    text-overflow: ellipsis;
+  }
+  .individualProduct img{
+    height: 220px;
+    width: 150px;
+  }
+  .individualProductCart img{
+    height: 227px;
+    width: 150px;
+  }
+  .bookTitle{
+    width: auto;
   }
   .productDetails {
     padding-bottom: 1.5%;
   }
   .cartBtn, .wishlistBtn {
-    margin-top: 2%;
+    margin-top: 0.8%;
+    width: 12rem;
   }
   .productDetailsCart{
-    padding: 1%;
+    padding: 2% 0%;
   }
   .authorName{
     margin: 0.2rem 0rem;
+  }
+  .pricingDiv{
+    flex-wrap: wrap;
+  }
+  .individualProductCart .pricingDiv{
+    gap: 0;
+    justify-content: space-between;
   }
 }

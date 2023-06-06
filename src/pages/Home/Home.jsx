@@ -7,10 +7,12 @@ import Footer from "../../components/Footer/Footer";
 import { ProductsContext } from "../../contexts/ProductsContext";
 
 function Home() {
-  const { setPageUrl } = useContext(ProductsContext);
+  const { setPageUrl, getCartProducts, getWishlistProducts } = useContext(ProductsContext);
 
   useEffect(() => {
     setPageUrl(window.location.href);
+    getCartProducts()
+    getWishlistProducts()
   }, []);
 
   return (

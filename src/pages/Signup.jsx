@@ -4,6 +4,8 @@ import "../index.css";
 import { AuthContext } from "../contexts/AuthContext";
 
 function Signup() {
+  const {handleUserSignup} = useContext(AuthContext)
+
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -11,8 +13,6 @@ function Signup() {
     password: "",
   });
   const { name, email, password } = formData;
-
-  const {handleUserSignup} = useContext(AuthContext)
 
   const onChange = (e) => {
     setFormData((prevState) => ({

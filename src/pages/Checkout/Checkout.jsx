@@ -6,12 +6,20 @@ import "./Checkout.css";
 function Checkout() {
   const { address } = useContext(AuthContext);
   const { cart } = useContext(ProductsContext);
-  const noOfItemsInCart = cart.length;
 
   const [totalPrice, setTotalPrice] = useState(0);
+  const [discountAmount, setDiscountAmount] = useState(0)
+  const [totalNoOfProductsInCart, setTotalNoOfProductsInCart] = useState(0)
   const [selectedAddress, setSelectedAddress] = useState(address[0]?._id);
 
   const addressToShow = address.find(({_id}) => _id === selectedAddress)
+
+  const calculateDiscountAmount = (discountRate, originalPrice) => {
+    const discountPercentage = discountRate / 100;
+    const discountAmount = originalPrice * discountPercentage;
+
+    return Math.floor(discountAmount);
+  }; 
 
   useEffect(() => {
     setTotalPrice(
@@ -20,6 +28,15 @@ function Checkout() {
         0
       )
     );
+
+    setDiscountAmount(
+      [...cart].reduce(
+        (total, product) => total + product.qty * calculateDiscountAmount(product.discountPercent, product.price),
+        0
+      )
+    )
+
+    setTotalNoOfProductsInCart([...cart].reduce((acc, curr) => acc + curr.qty, 0))
   }, [cart]);
 
   const handleAddressSelect = (e) => {
@@ -84,23 +101,23 @@ function Checkout() {
           <h3>Price Details</h3>
           <div className="priceBreakdownCheckout">
             <div className="individualPrice">
-              <p>Price ({noOfItemsInCart} item/s)</p>
+              <p>Price ({totalNoOfProductsInCart} item/s)</p>
               <p>{totalPrice}</p>
             </div>
             <div className="individualPrice">
               <p>Discount</p>
-              <p>100</p>
+              <p>{discountAmount}</p>
             </div>
             <div className="individualPrice">
               <p>Delivery Charges</p>
-              <p>0</p>
+              <p>FREE</p>
             </div>
             <div className="totalAmountCheckout">
               <p>
                 <strong>Total Amount</strong>
               </p>
               <p>
-                <strong>900</strong>
+                <strong>{totalPrice - discountAmount}</strong>
               </p>
             </div>
           </div>

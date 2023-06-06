@@ -3,6 +3,7 @@ import { ProductsContext } from "../../contexts/ProductsContext";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import Rating from "../Rating/Rating";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import "./ProductCard.css";
 
 function ProductCard({ product, parent }) {
@@ -11,9 +12,10 @@ function ProductCard({ product, parent }) {
   const {
     addToWishlistHandler,
     addToCartHandler,
-    moveProductsFromWishlistToCart,
     updateProductQuantityInCart,
-    moveProductFromCartToWishlist,
+    addProductFromCartToWishlist,
+    isProductPresentInCart,
+    isProductPresentInWishlist,
     isHovered,
     handleMouseEnter,
     handleMouseLeave,
@@ -32,7 +34,19 @@ function ProductCard({ product, parent }) {
   const goToProductDetailPage = (productId) => {
     navigate(`/products/${productId}`);
   };
-  
+
+  const showAnOutOfStockToast = (productTitle) => {
+    toast.error(`Sorry, ${productTitle} is out of stock`)
+  }
+
+  const calculateDiscountedPrice = (discountRate, originalPrice) => {
+    const discountPercentage = discountRate / 100;
+    const discountAmount = originalPrice * discountPercentage;
+    const discountedPrice = originalPrice - discountAmount;
+
+    return Math.round(discountedPrice);
+  };
+
   useEffect(() => {
     const card = cardRef.current;
     if (card) {
@@ -112,7 +126,7 @@ function ProductCard({ product, parent }) {
             //   isHovered[idx] ? () => handleMouseLeave(product._id) : null
             // }
           >
-            {product.isWishlisted ? (
+            {isProductPresentInWishlist(product._id) !== undefined ? (
               <AiFillHeart fill="red" size={20} />
             ) : (
               <AiOutlineHeart size={20} />
@@ -129,7 +143,18 @@ function ProductCard({ product, parent }) {
           {product.title}
         </h3>
         {parent === "Products" && <Rating rating={product.rating} />}
-        <p className="productPrice">{`Rs ${product.price}`}</p>
+        {product.discountPercent > 0 ? (
+          <div className="pricingDiv">
+            <p className="productFinalPrice">{`Rs ${calculateDiscountedPrice(product.discountPercent, product.price)}`}</p>
+            <p className="productOriginalPrice">{`Rs ${product.price}`}</p>
+            <p className="productDiscount"> {`(${product.discountPercent}% OFF)`}</p>
+          </div>
+        ) : (
+          <p className="productPrice">{`Rs ${product.price}`}</p>
+        )}
+        {(parent === "Products" || parent === "Wishlist") && (product?.isOutOfStock) && (
+          <p className="outOfStock">Out Of stock</p>
+        )}
         {parent === "Cart" && (
           <div className="quantityIncrease">
             <span>Quantity: </span>
@@ -137,7 +162,7 @@ function ProductCard({ product, parent }) {
               <button
                 disabled={product.qty === 1 ? true : false}
                 onClick={() =>
-                  updateProductQuantityInCart(product._id, "decrement")
+                  updateProductQuantityInCart(product, product._id, "decrement")
                 }
               >
                 -
@@ -145,7 +170,7 @@ function ProductCard({ product, parent }) {
               <input type="number" value={product.qty} />
               <button
                 onClick={() =>
-                  updateProductQuantityInCart(product._id, "increment")
+                  updateProductQuantityInCart(product, product._id, "increment")
                 }
               >
                 +
@@ -153,22 +178,29 @@ function ProductCard({ product, parent }) {
             </div>
           </div>
         )}
-
         {parent === "Wishlist" || parent === "Products" ? (
-          product.isPresentInCart ? (
-            <button className="cartBtn" onClick={goToCart}>
-              {parent === "Wishlist" ? "Already in cart" : "Go to cart"}
-            </button>
-          ) : (
+          isProductPresentInCart(product._id) !== undefined ? (
             <button
               className="cartBtn"
               onClick={
                 parent === "Wishlist"
-                  ? () => moveProductsFromWishlistToCart(product, product._id)
-                  : () => addToCartHandler(product, product._id)
+                  ? () =>
+                      updateProductQuantityInCart(
+                        product,
+                        product._id,
+                        "increment"
+                      )
+                  : () => goToCart()
               }
             >
-              {parent === "Wishlist" ? "Move to cart" : "Add to cart"}
+              {parent === "Wishlist" ? "Add to cart" : "Go to cart"}
+            </button>
+          ) : (
+            <button
+              className="cartBtn"
+              onClick={ product?.isOutOfStock ? () => showAnOutOfStockToast(product?.title) : () => addToCartHandler(product, product._id)}
+            >
+              Add to cart
             </button>
           )
         ) : (
@@ -178,18 +210,18 @@ function ProductCard({ product, parent }) {
               onClick={() => addToCartHandler(product, product._id)}
             >
               Remove from Cart
-            </button>{" "}
+            </button>
             <button
               className="wishlistBtn"
               onClick={
-                product.isWishlisted
+                isProductPresentInWishlist(product._id) !== undefined
                   ? () => goToWishlist()
-                  : () => moveProductFromCartToWishlist(product, product._id)
+                  : () => addProductFromCartToWishlist(product, product._id)
               }
             >
-              {product.isWishlisted
-                ? "Already in Wishlist"
-                : "Move to Wishlist"}
+              {isProductPresentInWishlist(product._id) !== undefined
+                ? "Go to Wishlist"
+                : "Add to Wishlist"}
             </button>
           </>
         )}

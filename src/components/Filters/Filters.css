@@ -39,6 +39,9 @@
   display: flex;
   flex-direction: column;
 }
+.categoriesFilter{
+  text-transform: capitalize;
+}
 @media screen and (max-width: 768px) {
   .filterContainer {
     position: fixed;

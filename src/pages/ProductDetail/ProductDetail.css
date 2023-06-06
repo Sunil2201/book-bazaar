@@ -32,7 +32,7 @@
   flex-direction: column;
   padding: 0;
 }
-.productLabels p {
+.normalLabel {
   padding: 0.5rem;
   background: #e4fffb;
   border-radius: 0.5rem;
@@ -122,7 +122,21 @@
 .pagesSection{
   color: var(--highlight-color);
 }
-
+.productPricingDiv{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.outOfStockProductDetail{
+  width: fit-content;
+  border-radius: 5px;
+  background: #f9d5cb;
+  color: #6c6c6c;
+  margin-bottom: 0;
+  padding: 0.5rem;
+  text-transform: uppercase;
+  font-weight: 600;
+}
 @media screen and (max-width: 768px) {
   .productDetailsContainer{
     display: flex;

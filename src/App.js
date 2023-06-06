@@ -1,5 +1,7 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Home from "./pages/Home/Home";
 import Products from "./pages/Products";
 import Header from "./components/Header/Header";
@@ -63,6 +65,7 @@ function App() {
           }
         />
       </Routes>
+      <ToastContainer autoClose={2000} position="bottom-right"/>
     </div>
   );
 }

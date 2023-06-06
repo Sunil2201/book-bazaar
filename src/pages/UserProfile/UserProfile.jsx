@@ -1,16 +1,17 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import "./UserProfile.css";
+import { ProductsContext } from "../../contexts/ProductsContext";
 
 function UserProfile() {
   const {
     user,
     address,
-    handleUserLogout,
     addNewAddressToList,
     editExistingAddress,
     deleteAddressFromList
   } = useContext(AuthContext);
+  const {handleUserLogout} = useContext(ProductsContext)
 
   const [activeSection, setActiveSection] = useState("profile");
   const [addNewAddress, setAddNewAddress] = useState(false);
@@ -64,6 +65,15 @@ function UserProfile() {
   const saveNewAddress = () => {
     addNewAddressToList(enteredAddress);
     setAddNewAddress(false);
+    setEnteredAddress({
+      name: "",
+      street: "",
+      city: "",
+      state: "",
+      country: "",
+      zipCode: "",
+      mobile: "",
+    });
   };
 
   const handleEditAddress = (addressToEdit) => {
@@ -131,7 +141,7 @@ function UserProfile() {
               <div className="userAddresses">
                 <h3>My Adresses</h3>
                 <div className="existingAddresses">
-                  {address.length > 0 &&
+                  {address?.length === 0 || address === null ? <p>No address added</p> :
                     address.map((singleAddress) => {
                       return (
                         <div className="singleAddress">

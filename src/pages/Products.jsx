@@ -3,6 +3,8 @@ import "../index.css";
 import { ProductsContext } from "../contexts/ProductsContext";
 import Filters from "../components/Filters/Filters";
 import ProductCard from "../components/ProductCard/ProductCard";
+import Spinner from "../components/Spinner";
+import { BiFilter } from "react-icons/bi";
 
 function Products() {
   const {
@@ -11,14 +13,11 @@ function Products() {
     selectedCategories,
     ratingFilter,
     sortingOrder,
-    setPageUrl
+    loading,
+    toggleFilterContainer,
   } = useContext(ProductsContext);
 
   const normalizedRating = parseInt(ratingFilter.split(" ")[0], 10);
-
-  useEffect(() => {
-    setPageUrl(window.location.href)
-  }, [])
 
   const getSortedProducts = (arrToSort) => {
     const sortedProducts =
@@ -81,15 +80,28 @@ function Products() {
         )
       : products.filter(({ price }) => price <= parseInt(priceFilter, 10));
 
+  const noOfBooksDisplayed = modifiedProducts.length;
+
+  if (loading) {
+    return <Spinner />;
+  }
+
   return (
     <div className="productPage">
       <Filters />
       <div className="productContainer">
-        <h3>Showing All Books</h3>
+        <div className="filterDiv">
+          <h3>Showing All Books ({noOfBooksDisplayed})</h3>
+          <BiFilter
+            size={30}
+            class="burger"
+            onClick={toggleFilterContainer}
+          ></BiFilter>
+        </div>
         <div className="allProducts">
           {modifiedProducts.map((product, idx) => {
             return (
-              <ProductCard product={product} key={idx} parent={"Products"}/>
+              <ProductCard product={product} key={idx} parent={"Products"} />
             );
           })}
         </div>

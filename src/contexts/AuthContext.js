@@ -1,5 +1,7 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { ProductsContext } from "./ProductsContext";
 
 export const AuthContext = createContext();
 
@@ -12,6 +14,7 @@ export function AuthProvider({ children }) {
     localStorage.getItem("address")
   );
   const [address, setAddress] = useState(userAddressFromLocalStorage);
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -33,10 +36,12 @@ export function AuthProvider({ children }) {
           setToken(encodedToken);
           localStorage.setItem("user", JSON.stringify({ user: foundUser }));
           setUser(foundUser);
-          navigate(location?.state?.from?.pathname);
+          navigate(location?.state?.from?.pathname || "/");
+          toast.success("Welcome back! You have successfully logged in.");
         }
       } catch (error) {
-        console.error(error);
+        console.error(error.message);
+        toast.error("Login failed. Please check your credentials and try again.");
       }
     } else {
       console.log("Please enter email and password");
@@ -57,14 +62,16 @@ export function AuthProvider({ children }) {
         });
         const { createdUser, encodedToken } = await response.json();
         if (response.status === 201) {
-          localStorage.setItem("auth", JSON.stringify({ token: encodedToken }));
           setToken(encodedToken);
           localStorage.setItem("user", JSON.stringify({ user: createdUser }));
           setUser(createdUser);
-          navigate(location?.state?.from?.pathname);
+          setAddress(createdUser?.address)
+          navigate(location?.state?.from?.pathname || "/");
+          toast.success("Welcome to our application! Your account has been created successfully.");
         }
       } catch (error) {
-        console.error(error);
+        console.error(error.message);
+        toast.error("Sign up failed. Please try again later.");
       }
     } else {
       console.log("Please enter all the details");
@@ -106,6 +113,7 @@ export function AuthProvider({ children }) {
         })
         const {address: addressList} = await res.json()
         setAddress(addressList)
+        toast.success("Address added successfully!")
       } catch (error) {
         console.log(error.message);
       }
@@ -127,6 +135,7 @@ export function AuthProvider({ children }) {
         })
         const {address: addressList} = await res.json()
         setAddress(addressList)
+        toast.success("Address updated successfully!");
       } catch (error) {
         console.log(error.message);
       }
@@ -143,8 +152,9 @@ export function AuthProvider({ children }) {
             authorization: token,
           },
         })
-        const {address: addressList} = await res.json()
-        setAddress(addressList)
+        const {address: addressList} = await res.json();
+        setAddress(addressList);
+        toast.success("Address deleted successfully!");
       } catch (error) {
         console.log(error.message);
       }
@@ -153,15 +163,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     getUserAddress()
-  }, [])
-
-  const handleUserLogout = () => {
-    localStorage.removeItem("auth");
-    localStorage.removeItem("user");
-    setToken("");
-    setUser({});
-    navigate("/");
-  };
+  }, [token])
 
   return (
     <AuthContext.Provider
@@ -169,9 +171,10 @@ export function AuthProvider({ children }) {
         token,
         user,
         address,
+        setToken,
+        setUser,
         handleUserLogin,
         handleUserSignup,
-        handleUserLogout,
         addNewAddressToList,
         editExistingAddress,
         deleteAddressFromList
