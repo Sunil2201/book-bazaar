@@ -2,10 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { MdVisibility } from "react-icons/md";
 import "../index.css";
 import { AuthContext } from "../contexts/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function SignIn() {
   const {handleUserLogin} = useContext(AuthContext)
+  const navigate = useNavigate()
  
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -21,8 +22,19 @@ function SignIn() {
     }));
   };
 
+  const enterTestCredentials = () => {
+    setFormData({
+      email: "ballanisunil123@gmail.com",
+      password: "sunil123"
+    })
+  }
+
+  const navigateToSignup = () => {
+    navigate("/signup")
+  }
+
   return (
-    <div className="pageContainer">
+    <div className="pageContainer loginPageContainer">
       <header>
         <h1 className="pageHeader">Welcome Back!</h1>
       </header>
@@ -52,11 +64,13 @@ function SignIn() {
             />
           </div>
         </form>
-        <button onClick={() => handleUserLogin(email, password)}>Sign In</button> &nbsp;
-        <button>Test user</button>
+        <div className="buttonContainer">
+          <button onClick={() => handleUserLogin(email, password)}>Sign In</button> &nbsp;
+          <button onClick={enterTestCredentials}>Test user</button>
+        </div>
         <div className="otherMethodOfAuth">
           <h3>Don't have an account?</h3>
-          <p> <Link to="/signup">Sign Up Instead</Link></p>
+          <p onClick={navigateToSignup}>Sign Up Instead</p>
         </div>
       </main>
     </div>

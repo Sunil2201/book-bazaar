@@ -15,7 +15,7 @@ export const users = [
     password: "adarshbalika",
     address: [
       {
-        _id: uuid(),
+        _id: "18fb3abf-21f4-4ad0-955f-230ecb0c76f5",
         name: "Adarsh Balika",
         street: "H. No. 21/4 , 100ft Ring Road, Vaishali Nagar",
         city: "Bangalore",
@@ -36,7 +36,7 @@ export const users = [
     password: "sunil123",
     address: [
       {
-        _id: uuid(),
+        _id: "3d19e656-343a-4a92-8cf0-bfd73159b9ef",
         name: "Sunil Ballani",
         street: "P.no.50, Lane no. 3, Abhiyanta Nagar, Vaishali Nagar",
         city: "Ajmer",

@@ -64,7 +64,7 @@ function Cart() {
               })}
             </div>
             <div className="priceDetailsCard">
-              <h3 className="cardHeading">Price Details</h3>
+              <h2 className="cardHeading">Price Details</h2>
               <div className="priceBreakdown">
                 <div className="individualPrice">
                   <p>Price ({totalNoOfProductsInCart} item/s)</p>
@@ -80,8 +80,8 @@ function Cart() {
                 </div>
               </div>
               <div className="totalAmount">
-                <h3>Total Amount</h3>
-                <h3>{totalPrice - discountAmount}</h3>
+                <h2>Total Amount</h2>
+                <h2>{totalPrice - discountAmount}</h2>
               </div>
               <p className="amountSavedSummary">
                 You will save {discountAmount} on this order

@@ -30,54 +30,55 @@
   outline: 2px solid #17bd8d;
 }
 .checkoutCard {
-  border: 1px solid black;
   padding: 2%;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   align-self: flex-start;
   width: 35%;
 }
-.orderDetailsHeader{
+.orderDetailsHeader {
   display: flex;
   justify-content: space-between;
 }
-.orderDetails{
+.orderDetails {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
-.itemsOrdered{
+.itemsOrdered {
   display: flex;
   flex-direction: column;
   padding: 1% 0%;
   gap: 0.5rem;
 }
-.singleItemOrdered{
+.singleItemOrdered {
   display: flex;
   justify-content: space-between;
 }
-.totalAmountCheckout{
+.totalAmountCheckout {
   display: flex;
   justify-content: space-between;
 }
-.priceBreakdownCheckout{
+.priceBreakdownCheckout {
   display: flex;
   flex-direction: column;
   padding-top: 3%;
   gap: 0.5rem;
 }
-.addressCard{
+.addressCard {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
 }
-.deliveryDetails{
+.deliveryDetails {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
-.placeOrder{
+.placeOrder {
   width: 100%;
   cursor: pointer;
   padding: 0.75rem;
@@ -85,4 +86,35 @@
   border-radius: 10px;
   color: white;
   background: var(--secondary-color);
+}
+
+@media screen and (max-width: 768px) {
+  .checkoutPage {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .checkoutCard{
+    padding: 5%;  
+    gap: 1rem;
+    align-self: flex-start;
+    width: 100%;
+  }
+  .addressContainer{
+    width: 148%;
+  }
+}
+@media screen and (max-width: 550px) {
+  .checkoutPage {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .checkoutCard{
+    padding: 5%;  
+    gap: 1rem;
+    align-self: flex-start;
+    width: 100%;
+  }
+  .addressContainer{
+    width: 100%;
+  }
 }

@@ -4,15 +4,13 @@ import { ProductsContext } from "../../contexts/ProductsContext";
 import "./Checkout.css";
 
 function Checkout() {
-  const { address } = useContext(AuthContext);
-  const { cart } = useContext(ProductsContext);
+  const { selectedAddress, cart, handleAddressSelect, handlePlaceOrder} = useContext(ProductsContext);
+  const {address} = useContext(AuthContext)
 
   const [totalPrice, setTotalPrice] = useState(0);
   const [discountAmount, setDiscountAmount] = useState(0)
   const [totalNoOfProductsInCart, setTotalNoOfProductsInCart] = useState(0)
-  const [selectedAddress, setSelectedAddress] = useState(address[0]?._id);
-
-  const addressToShow = address.find(({_id}) => _id === selectedAddress)
+  const [addressToShow, setAddressToShow] = useState({})
 
   const calculateDiscountAmount = (discountRate, originalPrice) => {
     const discountPercentage = discountRate / 100;
@@ -20,6 +18,10 @@ function Checkout() {
 
     return Math.floor(discountAmount);
   }; 
+
+  useEffect(() => {
+    setAddressToShow(address.find(({_id}) => _id === selectedAddress))
+  }, [address])
 
   useEffect(() => {
     setTotalPrice(
@@ -39,9 +41,6 @@ function Checkout() {
     setTotalNoOfProductsInCart([...cart].reduce((acc, curr) => acc + curr.qty, 0))
   }, [cart]);
 
-  const handleAddressSelect = (e) => {
-    setSelectedAddress(e.target.id);
-  };
 
   return (
     <main className="checkoutPage">
@@ -137,7 +136,7 @@ function Checkout() {
             <p>Phone Number: {addressToShow?.mobile}</p>
           </div>
         </div>
-        <button className="placeOrder">Place Order</button>
+        <button className="placeOrder" onClick={handlePlaceOrder}>Place Order</button>
       </section>
     </main>
   );

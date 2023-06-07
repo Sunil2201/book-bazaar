@@ -2,17 +2,23 @@ import React, { useContext, useState } from "react";
 import { MdVisibility } from "react-icons/md";
 import "../index.css";
 import { AuthContext } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
-  const {handleUserSignup} = useContext(AuthContext)
+  const { handleUserSignup } = useContext(AuthContext);
 
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [formData, setFormData] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
-  const { name, email, password } = formData;
+  const { firstName, lastName, email, password, confirmPassword } = formData;
+
+  const navigate = useNavigate()
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -21,19 +27,32 @@ function Signup() {
     }));
   };
 
+  const navigateToSignIn = () => {
+    navigate("/signin")
+  }
+
   return (
     <div className="pageContainer">
       <header>
-        <h1 className="pageHeader">Welcome!</h1>
+        <h2 className="pageHeader">Welcome!</h2>
       </header>
-      <main>
+      <main className="signupPageContainer">
         <form>
           <input
             type="text"
             className="nameInput"
-            placeholder="Name"
-            id="name"
-            value={name}
+            placeholder="First Name"
+            id="firstName"
+            value={firstName}
+            onChange={onChange}
+          />
+
+          <input
+            type="text"
+            className="nameInput"
+            placeholder="Last Name"
+            id="lastName"
+            value={lastName}
             onChange={onChange}
           />
 
@@ -60,11 +79,28 @@ function Signup() {
               onClick={() => setShowPassword((prevState) => !prevState)}
             />
           </div>
+          <div className="passwordInputDiv">
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              className="passwordInput"
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={onChange}
+              id="confirmPassword"
+            />
+            <MdVisibility
+              size={25}
+              className="showPassword"
+              onClick={() => setShowConfirmPassword((prevState) => !prevState)}
+            />
+          </div>
         </form>
-        <button onClick={() => handleUserSignup(name, email, password)}>Sign up</button>
+        <button onClick={() => handleUserSignup(firstName + " " + lastName, email, password)}>
+          Sign up
+        </button>
         <div className="otherMethodOfAuth">
           <h3>Already have an account?</h3>
-          <p>Sign In</p>
+          <p onClick={navigateToSignIn}>Sign In</p>
         </div>
       </main>
     </div>

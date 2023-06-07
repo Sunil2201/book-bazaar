@@ -14,6 +14,7 @@ import Wishlist from "./pages/Wishlist/Wishlist.jsx";
 import UserProfile from "./pages/UserProfile/UserProfile";
 import ProductDetail from "./pages/ProductDetail/ProductDetail";
 import Checkout from "./pages/Checkout/Checkout";
+import OrderSummary from "./pages/OrderSummary/OrderSummary";
 
 function App() {
   return (
@@ -61,6 +62,14 @@ function App() {
           element={
             <RequiresAuth>
               <Checkout />
+            </RequiresAuth>
+          }
+        />
+        <Route 
+          path="/orderSummary"
+          element={
+            <RequiresAuth>
+              <OrderSummary />
             </RequiresAuth>
           }
         />

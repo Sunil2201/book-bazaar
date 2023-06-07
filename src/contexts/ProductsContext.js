@@ -1,11 +1,14 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
+import { v4 as uuid } from "uuid";
 import { toast } from "react-toastify";
 
 export const ProductsContext = createContext();
 
 export function ProductsProvider({ children }) {
+  const { token, setToken, setUser, address} = useContext(AuthContext);
+
   const [fetchedProducts, setFetchedProducts] = useState([]);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -34,9 +37,17 @@ export function ProductsProvider({ children }) {
   const [searchedKeyword, setSearchedKeyword] = useState("");
   const [loading, setLoading] = useState(true);
   const [productLoading, setProductLoading] = useState(true);
+  const [selectedAddress, setSelectedAddress] = useState(address!== null && address[0]?._id);
+
+  const [orderDetails, setOrderDetails] = useState({
+    orderId: "",
+    totalAmount: 0,
+    orderAddress: "",
+    orderedProducts: []
+  })
 
   const navigate = useNavigate();
-  const { token, setToken, setUser } = useContext(AuthContext);
+  
 
   const getProducts = async () => {
     try {
@@ -514,6 +525,43 @@ export function ProductsProvider({ children }) {
     navigate("/products");
   }
 
+  const handleAddressSelect = (e) => {
+    setSelectedAddress(e.target.id);
+  };
+
+  const calculateDiscountAmount = (discountRate, originalPrice) => {
+    const discountPercentage = discountRate / 100;
+    const discountAmount = originalPrice * discountPercentage;
+
+    return Math.floor(discountAmount);
+  }; 
+
+  const calculateTotalAmount = () => {
+    const totalPrice  = [...cart].reduce(
+      (total, product) => total + product.qty * product.price,
+      0
+    )
+    const discountAmount = [...cart].reduce(
+      (total, product) => total + product.qty * calculateDiscountAmount(product.discountPercent, product.price),
+      0
+    )
+
+    return totalPrice-discountAmount
+  }
+
+  const addressSelectedByUser = address !== null && address.find(({_id}) => _id === selectedAddress)
+
+  const handlePlaceOrder = () => {
+    setOrderDetails({
+      orderId: uuid(),
+      totalAmount: calculateTotalAmount(),
+      orderAddress: addressSelectedByUser,
+      orderedProducts: [...cart]
+    });
+    setCart([])
+    navigate("/orderSummary");
+  }
+
   return (
     <ProductsContext.Provider
       value={{
@@ -532,6 +580,8 @@ export function ProductsProvider({ children }) {
         searchedKeyword,
         loading,
         productLoading,
+        selectedAddress,
+        orderDetails,
         setCategories,
         setSelectedCategories,
         setPageUrl,
@@ -558,7 +608,9 @@ export function ProductsProvider({ children }) {
         isProductPresentInCart,
         isProductPresentInWishlist,
         showSummerSaleProducts,
-        showEverydaySaleProducts
+        showEverydaySaleProducts,
+        handleAddressSelect,
+        handlePlaceOrder
       }}
     >
       {children}

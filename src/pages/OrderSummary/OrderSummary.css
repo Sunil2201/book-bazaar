@@ -1,0 +1,101 @@
+.orderSummaryPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2% 0%;
+  gap: 1rem;
+}
+.orderSummaryContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1% 3%;
+  height: 100%;
+  background: #f5f5f5;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+.orderDetails {
+  text-align: left;
+}
+.individualProductOrdered {
+  display: flex;
+  background-color: #fff;
+  padding: 1.5%;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  gap: 3%;
+}
+.individualProductOrdered img {
+  width: 140px;
+}
+.orderedItems {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.addressCard {
+  margin-top: 0.5rem;
+}
+.pricingDivOrderPage {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.orderSummaryEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 15%;
+}
+.orderSummaryEmpty h3 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--secondary-color);
+}
+.orderSummaryEmpty p {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #17bd8d;
+}
+.orderSummaryEmpty button {
+  border: none;
+  font-size: 1rem;
+  margin: 1rem 0;
+  padding: 1rem 1.5rem;
+  background: var(--secondary-color);
+  color: white;
+  border-radius: 2rem;
+  cursor: pointer;
+}
+@media screen and (max-width: 768px) {
+  .orderSummaryEmpty h3 {
+    font-size: 2.4rem;
+  }
+}
+@media screen and (max-width: 550px) {
+  .orderSummaryPage {
+    padding: 2%;
+  }
+  .pricingDivOrderPage {
+    justify-content: space-between;
+    gap: 0rem;
+  }
+  .orderSummaryEmpty{
+    padding-left: 2%;
+    padding-right: 2%;
+  }
+  .orderSummaryEmpty h3 {
+    font-size: 1.8rem;
+  }
+  .orderSummaryEmpty p {
+    font-size: 1rem;
+  }
+  .orderSummaryEmpty button {
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
+  }
+}

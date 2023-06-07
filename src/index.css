@@ -54,9 +54,8 @@ code {
 .nameInput,
 .passwordInput,
 .emailInput {
-  box-shadow: rgba(0, 0, 0, 0.11);
   border: none;
-  background: #ccc;
+  background: #f2f4f8;;
   border-radius: 3rem;
   height: 3rem;
   width: 100%;
@@ -65,6 +64,18 @@ code {
   padding: 0 3rem;
   font-size: 1rem;
   margin-bottom: 2rem;
+}
+.signupPageContainer button, .profileForm .buttonContainer button{
+  width: 10%;
+  cursor: pointer;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  background: var(--secondary-color);
+}
+.profileForm .buttonContainer button{
+  width: auto;
 }
 .passwordInputDiv {
   position: relative;
@@ -76,8 +87,16 @@ code {
   right: 2%;
 }
 .otherMethodOfAuth {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
   text-align: center;
   margin: 5%;
+}
+.otherMethodOfAuth p{
+  color: var(--light-text);
+  margin-top: 0.2rem;
+  cursor: pointer;
 }
 .swiper-container {
   min-height: 225px;
@@ -167,6 +186,20 @@ code {
     transform: rotate(360deg);
   }
 }
+.signupPageContainer, .loginPageContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 1%;
+}
+.signupPageContainer form, .loginPageContainer form, .profileForm{
+  width: 100%;
+}
+.profileForm .buttonContainer{
+  display: flex;
+  align-self: flex-start;
+  gap: 0.2rem;
+}
 @media screen and (max-width: 768px) {
   .productPage {
     display: grid;
@@ -177,6 +210,12 @@ code {
   }
   .swiper-container{
     height: 40vh;
+  }
+  .pageContainer{
+    padding: 1rem 1.5rem;
+  }
+  .signupPageContainer button{
+    width: 20%;
   }
 }
 
@@ -203,5 +242,14 @@ code {
   .productRedirectBtn{
     padding: 0.5rem 0.75rem;
     font-size: 12px;
+  }
+  .signupPageContainer{
+    padding-top: 4%;
+  }
+  .pageContainer{
+    padding: 1rem;
+  }
+  .signupPageContainer button{
+    width: 30%;
   }
 }

@@ -9,8 +9,8 @@
   padding: 2%;
   display: flex;
   flex-direction: column;
-  justify-content: start;  
-  align-items: start;  
+  justify-content: start;
+  align-items: start;
   gap: 5%;
   height: 18rem;
   width: 40%;
@@ -18,20 +18,20 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  position: relative;  
+  position: relative;
 }
 .dealContent {
   z-index: 2;
-  position: absolute; 
-  left: 10px;  
-  bottom: 33%;   
-  padding: 10px; 
+  position: absolute;
+  left: 10px;
+  bottom: 33%;
+  padding: 10px;
   color: #ffffff;
 }
-.dealContent p{
+.dealContent p {
   font-size: 18px;
 }
-.dealContent h2{
+.dealContent h2 {
   font-size: 26px;
 }
 .individualDeal button {
@@ -54,27 +54,42 @@
   gap: 5px;
 }
 @media (max-width: 768px) {
-  .dealsContainer{
+  .dealsContainer {
     display: flex;
     flex-direction: column;
     width: auto;
   }
   .individualDeal {
     margin: 2%;
-    width: 95%;
+    width: 100%;
   }
   .individualDeal button {
-    width: 60%;
+    width: 90%;
+  }
+  .dealContent p {
+    font-size: 12px;
+  }
+  .dealContent h2 {
+    font-size: 20px;
   }
 }
 
 @media (max-width: 480px) {
   .individualDeal {
-    margin: 2%;
-    width: 90%;
+    width: 100%;
+    background-size: contain;
+    height: 11.5rem;
   }
 
   .individualDeal button {
-    width: 40%;
+    padding: 0.5rem 1rem;
+    width: 80%;
+    font-size: 10px;
+  }
+  .dealContent p {
+    font-size: 10px;
+  }
+  .dealContent h2 {
+    font-size: 18px;
   }
 }
