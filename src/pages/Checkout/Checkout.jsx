@@ -3,6 +3,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { ProductsContext } from "../../contexts/ProductsContext";
 import "./Checkout.css";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Checkout() {
   const { selectedAddress, cart, handleAddressSelect, handlePlaceOrder } =
@@ -51,6 +52,10 @@ function Checkout() {
 
   const navigateToProfile = () => {
     navigate("/profile")
+  }
+
+  const showAddAddressToast = () => {
+    toast.error("Please select an address to continue")
   }
 
   return (
@@ -152,7 +157,7 @@ function Checkout() {
             <p>No address selected</p>
           )}
         </div>
-        <button className="placeOrder" onClick={handlePlaceOrder}>
+        <button className="placeOrder" onClick={selectedAddress !== "" ? () => handlePlaceOrder() : () => showAddAddressToast()}>
           Place Order
         </button>
       </section>

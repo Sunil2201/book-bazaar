@@ -557,7 +557,7 @@ export function ProductsProvider({ children }) {
       orderAddress: addressSelectedByUser,
       orderedProducts: [...cart]
     });
-    setCart([])
+    [...cart].map(({_id}) => removeProductFromCart(_id))
     navigate("/orderSummary");
   }
 
