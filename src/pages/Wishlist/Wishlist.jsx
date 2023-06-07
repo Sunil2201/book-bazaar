@@ -12,6 +12,7 @@ function Wishlist() {
 
   useEffect(() => {
     getWishlistProducts();
+    // eslint-disable-next-line
   }, []);
 
   return (

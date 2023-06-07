@@ -42,6 +42,7 @@ function Cart() {
 
   useEffect(() => {
     getCartProducts();
+    // eslint-disable-next-line
   }, []);
 
   return (

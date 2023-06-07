@@ -13,6 +13,7 @@ function Home() {
     setPageUrl(window.location.href);
     getCartProducts()
     getWishlistProducts()
+    // eslint-disable-next-line
   }, []);
 
   return (
