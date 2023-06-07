@@ -31,6 +31,14 @@ function Products() {
     return sortedProducts;
   };
 
+  const calculateDiscountedPrice = (discountRate, originalPrice) => {
+    const discountPercentage = discountRate / 100;
+    const discountAmount = originalPrice * discountPercentage;
+    const discountedPrice = originalPrice - discountAmount;
+
+    return Math.round(discountedPrice);
+  };
+
   const modifiedProducts =
     selectedCategories.length > 0
       ? products.reduce((acc, curr) => {
@@ -44,41 +52,41 @@ function Products() {
           }
           return ratingFilter !== "" && sortingOrder !== ""
             ? [...getSortedProducts(acc)].filter(
-                ({ rating, price }) =>
+                ({ rating, price, discountPercent }) =>
                   rating >= normalizedRating &&
-                  price <= parseInt(priceFilter, 10)
+                  calculateDiscountedPrice(discountPercent ,price) <= parseInt(priceFilter, 10)
               )
             : ratingFilter !== ""
             ? acc.filter(
-                ({ rating, price }) =>
+                ({ rating, price, discountPercent }) =>
                   rating >= normalizedRating &&
-                  price <= parseInt(priceFilter, 10)
+                  calculateDiscountedPrice(discountPercent, price) <= parseInt(priceFilter, 10)
               )
             : sortingOrder !== ""
             ? [...getSortedProducts(acc)].filter(
-                ({ price }) => price <= parseInt(priceFilter, 10)
+                ({ price, discountPercent}) => calculateDiscountedPrice(discountPercent, price) <= parseInt(priceFilter, 10)
               )
-            : acc.filter(({ price }) => price <= parseInt(priceFilter, 10));
+            : acc.filter(({ price, discountPercent }) => calculateDiscountedPrice(discountPercent, price) <= parseInt(priceFilter, 10));
         }, [])
       : ratingFilter !== "" && sortingOrder !== ""
       ? [
           ...getSortedProducts(
             products.filter(
-              ({ rating, price }) =>
-                rating >= normalizedRating && price <= parseInt(priceFilter, 10)
+              ({ rating, price, discountPercent}) =>
+                rating >= normalizedRating && calculateDiscountedPrice(discountPercent, price) <= parseInt(priceFilter, 10)
             )
           ),
         ]
       : ratingFilter !== ""
       ? products.filter(
-          ({ rating, price }) =>
-            rating >= normalizedRating && price <= parseInt(priceFilter, 10)
+          ({ rating, price, discountPercent }) =>
+            rating >= normalizedRating && calculateDiscountedPrice(discountPercent, price) <= parseInt(priceFilter, 10)
         )
       : sortingOrder !== ""
       ? [...getSortedProducts(products)].filter(
-          ({ price }) => price <= parseInt(priceFilter, 10)
+          ({ price, discountPercent}) => calculateDiscountedPrice(discountPercent, price) <= parseInt(priceFilter, 10)
         )
-      : products.filter(({ price }) => price <= parseInt(priceFilter, 10));
+      : products.filter(({ price, discountPercent }) => calculateDiscountedPrice(discountPercent, price) <= parseInt(priceFilter, 10));
 
   const noOfBooksDisplayed = modifiedProducts.length;
 
