@@ -36,7 +36,7 @@ function SignIn() {
   return (
     <div className="pageContainer loginPageContainer">
       <header>
-        <h1 className="pageHeader">Welcome Back!</h1>
+        <h2 className="pageHeader">Welcome Back!</h2>
       </header>
       <main className="profileForm">
         <form>
