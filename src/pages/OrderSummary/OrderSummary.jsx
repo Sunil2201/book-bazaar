@@ -1,12 +1,17 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { ProductsContext } from "../../contexts/ProductsContext";
 import "./OrderSummary.css";
 import { useNavigate } from "react-router-dom";
+import { popper } from "../../components/Popper";
 
 function OrderSummary() {
   const { orderDetails } = useContext(ProductsContext);
   const navigate = useNavigate()
-
+  useEffect(() => {
+    if (orderDetails?.orderedProducts?.length > 0) {
+      popper();
+    }
+  }, [orderDetails]);
   const calculateDiscountedPrice = (discountRate, originalPrice) => {
     const discountPercentage = discountRate / 100;
     const discountAmount = originalPrice * discountPercentage;
