@@ -23,10 +23,10 @@ function Products() {
     const sortedProducts =
       sortingOrder === "ascending"
         ? [...arrToSort].sort(
-            (a, b) => parseInt(a.price, 10) - parseInt(b.price, 10)
+            (a, b) => calculateDiscountedPrice(a.discountPercent, a.price) - calculateDiscountedPrice(b.discountPercent, b.price)
           )
         : [...arrToSort].sort(
-            (a, b) => parseInt(b.price, 10) - parseInt(a.price, 10)
+            (a, b) => calculateDiscountedPrice(b.discountPercent, b.price) - calculateDiscountedPrice(a.discountPercent, a.price)
           );
     return sortedProducts;
   };
