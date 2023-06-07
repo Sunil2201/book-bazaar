@@ -28,7 +28,7 @@ function ProductDetail() {
   useEffect(() => {
     fetchProductDetails(productId);
     setProductLoading(true);
-  }, []);
+  }, [fetchProductDetails, productId, setProductLoading]);
 
   const goToWishlist = () => {
     navigate("/wishlist");
@@ -83,7 +83,7 @@ function ProductDetail() {
               <span>Select Format:</span> {selectedFormat}
             </p>
             <div className="formatsContainer">
-              {formats.map((format) => {
+              {formats.map((format, idx) => {
                 return (
                   <p
                     className={
@@ -91,6 +91,7 @@ function ProductDetail() {
                     }
                     onClick={changeFormat}
                     value={format}
+                    key={idx}
                   >
                     {format}
                   </p>
@@ -118,8 +119,8 @@ function ProductDetail() {
               <p className="label">Genres</p>
               <div className="genresContainer">
                 {productDetails?.genres.length &&
-                  productDetails?.genres.map((genre) => {
-                    return <p>{genre}</p>;
+                  productDetails?.genres.map((genre, idx) => {
+                    return <p key={idx}>{genre}</p>;
                   })}
               </div>
             </div>

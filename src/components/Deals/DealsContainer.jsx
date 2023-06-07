@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import "./DealsContainer.css";
-import { NavLink } from "react-router-dom";
 import { SlArrowRight } from "react-icons/sl";
 import { ProductsContext } from "../../contexts/ProductsContext";
 
@@ -28,6 +27,7 @@ function DealsContainer() {
           <div
             className="individualDeal"
             style={{ backgroundImage: `url(${img})` }}
+            key={idx}
           >
             <div className="dealContent">
               <p>{heading}</p>

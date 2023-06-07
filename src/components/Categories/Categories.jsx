@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./Categories.css";
-import { NavLink } from "react-router-dom";
 import { ProductsContext } from "../../contexts/ProductsContext";
 import Spinner from "../Spinner";
 
@@ -61,7 +60,7 @@ function Categories() {
       <h2>Featured Book Categories</h2>
       <div className="image-container">
         {mergedCategories.map(({ image, categoryName, _id }, index) => (
-          <div className="singleCategory" onClick={() => viewParticularCategoryBooks(_id)}>
+          <div key={index} className="singleCategory" onClick={() => viewParticularCategoryBooks(_id)}>
             <img
               key={index}
               src={image}

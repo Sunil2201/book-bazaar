@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import "../index.css";
 import { ProductsContext } from "../contexts/ProductsContext";
 import Filters from "../components/Filters/Filters";
@@ -94,7 +94,7 @@ function Products() {
           <h3>Showing All Books ({noOfBooksDisplayed})</h3>
           <BiFilter
             size={30}
-            class="burger"
+            className="burger"
             onClick={toggleFilterContainer}
           ></BiFilter>
         </div>

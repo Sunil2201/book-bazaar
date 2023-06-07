@@ -2,26 +2,29 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { ProductsContext } from "../../contexts/ProductsContext";
 import "./Checkout.css";
+import { useNavigate } from "react-router-dom";
 
 function Checkout() {
-  const { selectedAddress, cart, handleAddressSelect, handlePlaceOrder} = useContext(ProductsContext);
-  const {address} = useContext(AuthContext)
+  const { selectedAddress, cart, handleAddressSelect, handlePlaceOrder } =
+    useContext(ProductsContext);
+  const { address } = useContext(AuthContext);
+  const navigate = useNavigate()
 
   const [totalPrice, setTotalPrice] = useState(0);
-  const [discountAmount, setDiscountAmount] = useState(0)
-  const [totalNoOfProductsInCart, setTotalNoOfProductsInCart] = useState(0)
-  const [addressToShow, setAddressToShow] = useState({})
+  const [discountAmount, setDiscountAmount] = useState(0);
+  const [totalNoOfProductsInCart, setTotalNoOfProductsInCart] = useState(0);
+  const [addressToShow, setAddressToShow] = useState();
 
   const calculateDiscountAmount = (discountRate, originalPrice) => {
     const discountPercentage = discountRate / 100;
     const discountAmount = originalPrice * discountPercentage;
 
     return Math.floor(discountAmount);
-  }; 
+  };
 
   useEffect(() => {
-    setAddressToShow(address.find(({_id}) => _id === selectedAddress))
-  }, [address])
+    setAddressToShow(address.find(({ _id }) => _id === selectedAddress));
+  }, [selectedAddress, address]);
 
   useEffect(() => {
     setTotalPrice(
@@ -33,14 +36,22 @@ function Checkout() {
 
     setDiscountAmount(
       [...cart].reduce(
-        (total, product) => total + product.qty * calculateDiscountAmount(product.discountPercent, product.price),
+        (total, product) =>
+          total +
+          product.qty *
+            calculateDiscountAmount(product.discountPercent, product.price),
         0
       )
-    )
+    );
 
-    setTotalNoOfProductsInCart([...cart].reduce((acc, curr) => acc + curr.qty, 0))
+    setTotalNoOfProductsInCart(
+      [...cart].reduce((acc, curr) => acc + curr.qty, 0)
+    );
   }, [cart]);
 
+  const navigateToProfile = () => {
+    navigate("/profile")
+  }
 
   return (
     <main className="checkoutPage">
@@ -73,6 +84,7 @@ function Checkout() {
             );
           })}
         </div>
+        <button onClick={navigateToProfile} className="addNewAddress">Add an Address</button>
       </section>
       <section className="checkoutCard">
         <div className="orderDetails">
@@ -86,9 +98,9 @@ function Checkout() {
             </p>
           </div>
           <div className="itemsOrdered">
-            {cart.map((item) => {
+            {cart.map((item, idx) => {
               return (
-                <div className="singleItemOrdered">
+                <div className="singleItemOrdered" key={idx}>
                   <p>{item.title}</p>
                   <p>{item.qty}</p>
                 </div>
@@ -123,20 +135,26 @@ function Checkout() {
         </div>
         <div className="deliveryDetails">
           <h3>Deliver to</h3>
-          <div className="addressCard">
-            <p>
-              <strong>{addressToShow?.name}</strong>
-            </p>
-            <p>{addressToShow?.street}</p>
-            <p>
-              {addressToShow?.city}, {addressToShow?.state}{" "}
-              {addressToShow?.zipCode}
-            </p>
-            <p>{addressToShow?.country}</p>
-            <p>Phone Number: {addressToShow?.mobile}</p>
-          </div>
+          {addressToShow ? (
+            <div className="addressCard">
+              <p>
+                <strong>{addressToShow?.name}</strong>
+              </p>
+              <p>{addressToShow?.street}</p>
+              <p>
+                {addressToShow?.city}, {addressToShow?.state}{" "}
+                {addressToShow?.zipCode}
+              </p>
+              <p>{addressToShow?.country}</p>
+              <p>Phone Number: {addressToShow?.mobile}</p>
+            </div>
+          ) : (
+            <p>No address selected</p>
+          )}
         </div>
-        <button className="placeOrder" onClick={handlePlaceOrder}>Place Order</button>
+        <button className="placeOrder" onClick={handlePlaceOrder}>
+          Place Order
+        </button>
       </section>
     </main>
   );

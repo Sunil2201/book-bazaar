@@ -104,7 +104,7 @@ function UserProfile() {
           <h2>Account Details</h2>
           <div className="mainContainer">
             <div className="sections">
-              {sections.map((section) => {
+              {sections.map((section, idx) => {
                 return (
                   <p
                     className={
@@ -114,6 +114,7 @@ function UserProfile() {
                     }
                     onClick={handleSectionChange}
                     value={section.toLowerCase()}
+                    key={idx}
                   >
                     {section}
                   </p>
@@ -142,9 +143,9 @@ function UserProfile() {
                 <h3>My Adresses</h3>
                 <div className="existingAddresses">
                   {address?.length === 0 || address === null ? <p>No address added</p> :
-                    address.map((singleAddress) => {
+                    address.map((singleAddress, idx) => {
                       return (
-                        <div className="singleAddress">
+                        <div className="singleAddress" key={idx}>
                           <p>
                             <strong>{singleAddress?.name}</strong>
                           </p>
@@ -194,7 +195,7 @@ function UserProfile() {
             placeholder="Enter house no., road, colony"
             onChange={handleChange}
           />
-          <input type="text" value={city} id="city" placeholder="Enter city" />
+          <input type="text" value={city} id="city" placeholder="Enter city" onChange={handleChange}/>
           <input
             type="text"
             value={state}

@@ -14,7 +14,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 function Header() {
   const { token } = useContext(AuthContext);
   const { handleUserLogout, wishList, cart } = useContext(ProductsContext);
-  const { pageUrl, toggleFilterContainer, searchedKeyword, searchForProducts } =
+  const { searchedKeyword, searchForProducts } =
     useContext(ProductsContext);
   const [totalNoOfProductsInCart, setTotalNoOfProductsInCart] = useState(0)
 
@@ -45,7 +45,6 @@ function Header() {
             type="text"
             value={searchedKeyword}
             onChange={searchForProducts}
-            id=""
             placeholder="Search Products..."
           />
         </div>
@@ -76,7 +75,6 @@ function Header() {
           type="text"
           value={searchedKeyword}
           onChange={searchForProducts}
-          id=""
           placeholder="Search Products..."
         />
       </div>

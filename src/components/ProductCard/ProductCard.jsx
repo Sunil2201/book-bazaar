@@ -16,9 +16,6 @@ function ProductCard({ product, parent }) {
     addProductFromCartToWishlist,
     isProductPresentInCart,
     isProductPresentInWishlist,
-    isHovered,
-    handleMouseEnter,
-    handleMouseLeave,
   } = useContext(ProductsContext);
 
   const navigate = useNavigate();
@@ -167,7 +164,7 @@ function ProductCard({ product, parent }) {
               >
                 -
               </button>
-              <input type="number" value={product.qty} />
+              <input type="number" value={product.qty} readOnly/>
               <button
                 onClick={() =>
                   updateProductQuantityInCart(product, product._id, "increment")

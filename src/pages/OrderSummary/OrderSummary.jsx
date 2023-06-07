@@ -53,9 +53,9 @@ function OrderSummary() {
                   <p>Phone Number: {orderDetails?.orderAddress?.mobile}</p>
                 </div>
                 <div className="orderedItems">
-                  {orderDetails?.orderedProducts.map((order) => {
+                  {orderDetails?.orderedProducts.map((order, idx) => {
                     return (
-                      <div className="individualProductOrdered">
+                      <div className="individualProductOrdered" key={idx}>
                         <img src={order.img} alt="" />
                         <div className="productDetails">
                           <p>{order.author}</p>

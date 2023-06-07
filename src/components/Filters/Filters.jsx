@@ -55,13 +55,13 @@ function Filters() {
         <div className="categoriesContainer">
           {categories.map((category, idx) => {
             return (
-              <div className="singleCategoryFilter">
+              <div className="singleCategoryFilter" key={idx}>
                 <input
                   type="checkbox"
                   id={`category-${idx}`}
                   value={category.categoryName}
                   checked={category.isSelected}
-                  onClick={() => handleCategory(category._id)}
+                  onChange={() => handleCategory(category._id)}
                 />
                 <label htmlFor={`category-${idx}`}>
                   {category.categoryName}
@@ -78,7 +78,7 @@ function Filters() {
         <div className="ratingsContainer">
           {ratings.map((rating, idx) => {
             return (
-              <div className="singleRating">
+              <div className="singleRating" key={idx}>
                 <input
                   type="radio"
                   id={`rating-${idx}`}

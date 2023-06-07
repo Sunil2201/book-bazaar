@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { makeServer } from "./server";
@@ -10,7 +10,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 // Call make Server
 makeServer();
 
-ReactDOM.render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Router>
       <AuthProvider>
@@ -20,5 +20,4 @@ ReactDOM.render(
       </AuthProvider>
     </Router>
   </React.StrictMode>,
-  document.getElementById("root")
 );

@@ -37,7 +37,7 @@ export function ProductsProvider({ children }) {
   const [searchedKeyword, setSearchedKeyword] = useState("");
   const [loading, setLoading] = useState(true);
   const [productLoading, setProductLoading] = useState(true);
-  const [selectedAddress, setSelectedAddress] = useState(address!== null && address[0]?._id);
+  const [selectedAddress, setSelectedAddress] = useState("");
 
   const [orderDetails, setOrderDetails] = useState({
     orderId: "",
@@ -48,7 +48,6 @@ export function ProductsProvider({ children }) {
 
   const navigate = useNavigate();
   
-
   const getProducts = async () => {
     try {
       const response = await fetch("/api/products");
