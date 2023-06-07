@@ -28,7 +28,8 @@ function ProductDetail() {
   useEffect(() => {
     fetchProductDetails(productId);
     setProductLoading(true);
-  }, [fetchProductDetails, productId, setProductLoading]);
+    // eslint-disable-next-line
+  }, []);
 
   const goToWishlist = () => {
     navigate("/wishlist");
