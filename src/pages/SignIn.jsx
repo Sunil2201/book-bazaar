@@ -27,6 +27,7 @@ function SignIn() {
       email: "ballanisunil123@gmail.com",
       password: "sunil123"
     })
+    handleUserLogin("ballanisunil123@gmail.com", "sunil123");
   }
 
   const navigateToSignup = () => {
