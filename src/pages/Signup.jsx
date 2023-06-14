@@ -8,7 +8,7 @@ function Signup() {
   const { handleUserSignup } = useContext(AuthContext);
 
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -18,7 +18,7 @@ function Signup() {
   });
   const { firstName, lastName, email, password, confirmPassword } = formData;
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -28,7 +28,12 @@ function Signup() {
   };
 
   const navigateToSignIn = () => {
-    navigate("/signin")
+    navigate("/signin");
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    handleUserSignup(firstName + " " + lastName, email, password)
   }
 
   return (
@@ -37,7 +42,7 @@ function Signup() {
         <h2 className="pageHeader">Welcome!</h2>
       </header>
       <main className="signupPageContainer">
-        <form>
+        <form onSubmit={handleSubmit}>
           <input
             type="text"
             className="nameInput"
@@ -45,6 +50,7 @@ function Signup() {
             id="firstName"
             value={firstName}
             onChange={onChange}
+            required
           />
 
           <input
@@ -54,6 +60,7 @@ function Signup() {
             id="lastName"
             value={lastName}
             onChange={onChange}
+            required
           />
 
           <input
@@ -63,6 +70,7 @@ function Signup() {
             id="email"
             value={email}
             onChange={onChange}
+            required
           />
           <div className="passwordInputDiv">
             <input
@@ -72,6 +80,7 @@ function Signup() {
               value={password}
               onChange={onChange}
               id="password"
+              required
             />
             <MdVisibility
               size={25}
@@ -87,6 +96,7 @@ function Signup() {
               value={confirmPassword}
               onChange={onChange}
               id="confirmPassword"
+              required
             />
             <MdVisibility
               size={25}
@@ -94,10 +104,10 @@ function Signup() {
               onClick={() => setShowConfirmPassword((prevState) => !prevState)}
             />
           </div>
+          <button type="submit">
+            Sign up
+          </button>
         </form>
-        <button onClick={() => handleUserSignup(firstName + " " + lastName, email, password)}>
-          Sign up
-        </button>
         <div className="otherMethodOfAuth">
           <h3>Already have an account?</h3>
           <p onClick={navigateToSignIn}>Sign In</p>

@@ -5,9 +5,9 @@ import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 function SignIn() {
-  const {handleUserLogin} = useContext(AuthContext)
-  const navigate = useNavigate()
- 
+  const { handleUserLogin } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -25,14 +25,19 @@ function SignIn() {
   const enterTestCredentials = () => {
     setFormData({
       email: "ballanisunil123@gmail.com",
-      password: "sunil123"
-    })
+      password: "sunil123",
+    });
     handleUserLogin("ballanisunil123@gmail.com", "sunil123");
-  }
+  };
 
   const navigateToSignup = () => {
-    navigate("/signup")
-  }
+    navigate("/signup");
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    handleUserLogin(email, password);
+  };
 
   return (
     <div className="pageContainer loginPageContainer">
@@ -40,7 +45,7 @@ function SignIn() {
         <h2 className="pageHeader">Welcome Back!</h2>
       </header>
       <main className="profileForm">
-        <form>
+        <form onSubmit={handleSubmit}>
           <input
             type="email"
             className="emailInput"
@@ -48,6 +53,7 @@ function SignIn() {
             value={email}
             onChange={onChange}
             id="email"
+            required
           />
           <div className="passwordInputDiv">
             <input
@@ -57,6 +63,7 @@ function SignIn() {
               value={password}
               onChange={onChange}
               id="password"
+              required
             />
             <MdVisibility
               size={25}
@@ -64,11 +71,11 @@ function SignIn() {
               onClick={() => setShowPassword((prevState) => !prevState)}
             />
           </div>
+          <div className="buttonContainer">
+            <button type="submit">Sign In</button> &nbsp;
+            <button type="button" onClick={enterTestCredentials}>Test user</button>
+          </div>
         </form>
-        <div className="buttonContainer">
-          <button onClick={() => handleUserLogin(email, password)}>Sign In</button> &nbsp;
-          <button onClick={enterTestCredentials}>Test user</button>
-        </div>
         <div className="otherMethodOfAuth">
           <h3>Don't have an account?</h3>
           <p onClick={navigateToSignup}>Sign Up Instead</p>
